@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "179444223947",
+    "firebase_url": "https://compostore-74adb.firebaseio.com",
+    "project_id": "compostore-74adb",
+    "storage_bucket": "compostore-74adb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179444223947:android:80a76f50053c3d71",
+        "android_client_info": {
+          "package_name": "es.uniovi.sdm.compostore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179444223947-rhlfhe6g88ndkpodtcjmnfn6l4kvk3rj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "es.uniovi.sdm.compostore",
+            "certificate_hash": "832b4dbf9dabd4954e03eb2604ec4c7099602aa5"
+          }
+        },
+        {
+          "client_id": "179444223947-116rt8g69s2skqbhd7bhv6mp4e87alou.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHjaJJS1UzvxLIUJ575KJCBHYd38O-q4E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179444223947-116rt8g69s2skqbhd7bhv6mp4e87alou.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
