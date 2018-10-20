@@ -79,7 +79,6 @@
         android:layout_alignParentBottom="true"
         android:text="@string/SignIn"
         android:textColor="@android:color/white"
-        android:layout_weight="1"
         android:layout_width="match_parent"
         app:fButtonColor="@color/btnSignIn"
         app:cornerRadius="4dp"
