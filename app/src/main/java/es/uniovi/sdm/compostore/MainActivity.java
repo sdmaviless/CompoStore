@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnSignIn;
     Button btnSignUp;
+    Button btnContinueUnlogged;
 
     TextView txtSlogan;
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnSignIn = (Button)findViewById(R.id.btnSignIn);
         btnSignUp = (Button)findViewById(R.id.btnSignUp);
+        btnContinueUnlogged= (Button)findViewById((R.id.btnContinueUnlogged));
 
         txtSlogan = (TextView)findViewById(R.id.txtSlogan);
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/Madeleina Sans.otf");
@@ -39,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        btnContinueUnlogged.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent home = new Intent(MainActivity.this, UserNotLoggedActivity.class);
+                startActivity(home);
             }
         });
     }

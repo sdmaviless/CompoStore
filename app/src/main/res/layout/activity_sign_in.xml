@@ -27,7 +27,6 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:textColorHint="@android:color/white"
-               android:text="@string/phoneExample"
                android:textColor="@android:color/white"
                android:textSize="34sp"
                android:inputType="phone"
@@ -45,7 +44,6 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:textColorHint="@android:color/white"
-               android:text="@string/NameExample"
                android:textColor="@android:color/white"
                android:textSize="34sp"
                android:inputType="textPersonName"
@@ -59,14 +57,13 @@
 
            <EditText
                android:id="@+id/editPassword"
-               android:hint="@string/Password"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:textColorHint="@android:color/white"
-               android:text="@string/PassExample"
+               android:hint="@string/Password"
+               android:inputType="textPassword"
                android:textColor="@android:color/white"
-               android:textSize="34sp"
-               android:inputType="textPassword" />
+               android:textColorHint="@android:color/white"
+               android:textSize="34sp" />
        </android.support.design.widget.TextInputLayout>
 
    </LinearLayout>
