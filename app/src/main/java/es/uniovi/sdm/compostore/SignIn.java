@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,15 +27,15 @@ public class SignIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-
+        Log.wtf("1","primer log");
         editPassword = (EditText) findViewById(R.id.editPassword);
         editPhone = (EditText) findViewById(R.id.editPhone);
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
-
+        Log.wtf("2","segundo log");
         //Inicializando la base de datos
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_user = database.getReference("User");
-
+        Log.wtf("3","tercer log");
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

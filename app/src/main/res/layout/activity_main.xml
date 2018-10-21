@@ -37,45 +37,57 @@
 
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:weightSum="2"
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_marginBottom="44dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <info.hoang8f.widget.FButton
             android:id="@+id/btnSignUp"
-            android:text="@string/SignUp"
-            android:textColor="@android:color/white"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="@string/SignUp"
+            android:textColor="@android:color/white"
+            app:cornerRadius="4dp"
             app:fButtonColor="@color/btnSignUp"
             app:shadowColor="@android:color/black"
             app:shadowEnabled="true"
-            app:shadowHeight="5dp"
-            app:cornerRadius="4dp" />
+            app:shadowHeight="5dp" />
 
 
         <info.hoang8f.widget.FButton
             android:id="@+id/btnSignIn"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:layout_weight="1"
             android:text="@string/SignIn"
             android:textColor="@android:color/white"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            app:fButtonColor="@color/btnSignIn"
             app:cornerRadius="4dp"
+            app:fButtonColor="@color/btnSignIn"
             app:shadowColor="@android:color/black"
             app:shadowEnabled="true"
             app:shadowHeight="5dp" />
 
     </LinearLayout>
 
-
+    <info.hoang8f.widget.FButton
+        android:id="@+id/btnContinueUnlogged"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/continueUnlogged"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
