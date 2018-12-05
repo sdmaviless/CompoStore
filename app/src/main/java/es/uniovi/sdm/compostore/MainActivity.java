@@ -40,15 +40,16 @@ public class MainActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent signUp = new Intent(MainActivity.this, SignUp.class);
+                startActivity(signUp);
             }
         });
 
         btnContinueUnlogged.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent home = new Intent(MainActivity.this, UserNotLoggedActivity.class);
-                startActivity(home);
+                Intent notLogged = new Intent(MainActivity.this, UserNotLoggedActivity.class);
+                startActivity(notLogged);
             }
         });
     }

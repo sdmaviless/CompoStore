@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="es.uniovi.sdm.compostore">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,15 +19,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignIn" />
-        <activity android:name=".UserLoggedActivity"
+        <activity
+            android:name=".UserLoggedActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UserNotLoggedActivity"
             android:label="@string/title_activity_user__not_logged"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".SignUp" />
     </application>
 
 </manifest>

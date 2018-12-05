@@ -7,5 +7,7 @@
     <color name="btnSignUp">#394879</color>
     <color name="btnSignIn">#40cdd4</color>
 
+    <color name="overlayBackground">#7f333639</color>
+    <color name="overlayActionBar">#0e0d0e</color>
 
 </resources>

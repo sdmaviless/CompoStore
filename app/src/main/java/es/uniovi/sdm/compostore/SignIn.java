@@ -1,6 +1,7 @@
 package es.uniovi.sdm.compostore;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import es.uniovi.sdm.compostore.Common.Common;
 import es.uniovi.sdm.compostore.Model.User;
 
 public class SignIn extends AppCompatActivity {
@@ -31,10 +33,12 @@ public class SignIn extends AppCompatActivity {
         editPassword = (EditText) findViewById(R.id.editPassword);
         editPhone = (EditText) findViewById(R.id.editPhone);
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
+
         Log.wtf("2","segundo log");
         //Inicializando la base de datos
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_user = database.getReference("User");
+
         Log.wtf("3","tercer log");
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +49,7 @@ public class SignIn extends AppCompatActivity {
                 mDialog.show();
 
                 table_user.addValueEventListener(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         //Comprobar que el usuario existe en la base de datos
@@ -53,7 +58,12 @@ public class SignIn extends AppCompatActivity {
                             mDialog.dismiss();
                             User user = dataSnapshot.child(editPhone.getText().toString()).getValue(User.class);
                             if (user.getPassword().equals(editPassword.getText().toString())) {
-                                Toast.makeText(SignIn.this, "Sign in successfully", Toast.LENGTH_SHORT).show();
+                                {
+                                    Intent loggedIntent = new Intent(SignIn.this, UserLoggedActivity.class);
+                                    Common.currentUser = user;
+                                    startActivity(loggedIntent);
+                                    finish();
+                                }
                             } else {
                                 Toast.makeText(SignIn.this, "Incorrect Password", Toast.LENGTH_SHORT).show();
                             }
