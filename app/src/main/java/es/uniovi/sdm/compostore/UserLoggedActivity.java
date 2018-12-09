@@ -1,5 +1,6 @@
 package es.uniovi.sdm.compostore;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -156,21 +157,59 @@ public class UserLoggedActivity extends AppCompatActivity
         if (id == R.id.nav_products) {
             // Handle the camera action
         } else if (id == R.id.nav_favourites) {
-
+            launchFavourites();
         } else if (id == R.id.nav_cart) {
-
+            launchCart();
         } else if (id == R.id.nav_orders) {
-
+            launchOrders();
         } else if (id == R.id.nav_settings){
-
+            launchSettings();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_sign_out) {
-
+            launchSignOut();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void launchSignOut(){
+        //Launch MainActivity, close session
+        Intent loggedIntent = new Intent(UserLoggedActivity.this, MainActivity.class);
+        Common.currentUser = null;
+        startActivity(loggedIntent);
+        finish();
+    }
+
+    public void launchFavourites(){
+        //Launch FavouritesActivity
+        Intent loggedIntent = new Intent(UserLoggedActivity.this, Favourites.class);
+        startActivity(loggedIntent);
+        finish();
+    }
+
+    public void launchCart(){
+        //Launch CartActivity
+        Intent loggedIntent = new Intent(UserLoggedActivity.this, Cart.class);
+        startActivity(loggedIntent);
+        finish();
+    }
+
+    public void launchOrders(){
+        //Launch CartActivity
+        Intent loggedIntent = new Intent(UserLoggedActivity.this, Orders.class);
+        startActivity(loggedIntent);
+        finish();
+    }
+
+    public void launchSettings(){
+        //Launch CartActivity
+        Intent loggedIntent = new Intent(UserLoggedActivity.this, Settings.class);
+        startActivity(loggedIntent);
+        finish();
+    }
 }
+
+

@@ -28,6 +28,10 @@
             android:label="@string/title_activity_user__not_logged"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SignUp" />
+        <activity android:name=".Favourites" />
+        <activity android:name=".Cart" />
+        <activity android:name=".Orders" />
+        <activity android:name=".Settings"></activity>
     </application>
 
 </manifest>

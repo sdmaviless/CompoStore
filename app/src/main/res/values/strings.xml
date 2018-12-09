@@ -22,4 +22,22 @@
     <string name="sample_mail">yourmail@gmail.com</string>
     <string name="sample_username">yourusername</string>
     <string name="title_activity_home">Home</string>
+
+    <string name="checkbox_remember_me_message">Remember me next time I log in</string>
+    <string name="menuProducts">Products</string>
+    <string name="menuFavourites">Favourites</string>
+    <string name="menuCart">Cart</string>
+    <string name="menuOrders">Orders</string>
+    <string name="menuSettings">Settings</string>
+    <string name="menuCommunicate">Communicate</string>
+    <string name="menuShare">Share a product</string>
+    <string name="menuSignOut">Sign Out</string>
+
+    <string name="sampleFavourites">Favourites -  Example</string>
+    <string name="sampleCart">Cart -  Example</string>
+    <string name="sampleOrders">Orders -  Example</string>
+    <string name="sampleSettings">Settings -  Example</string>
+
+    <string name="btnBack">Back</string>
+
 </resources>

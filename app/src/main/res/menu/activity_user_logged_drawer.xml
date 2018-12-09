@@ -5,36 +5,37 @@
         <item
             android:id="@+id/nav_products"
             android:icon="@drawable/ic_products_black_24dp"
-            android:title="Products" />
+            android:title="@string/menuProducts" />
         <item
             android:id="@+id/nav_favourites"
             android:icon="@drawable/ic_stars_black_24dp"
-            android:title="Favourites" />
+            android:title="@string/menuFavourites" />
         <item
             android:id="@+id/nav_cart"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
-            android:title="Cart" />
+            android:title="@string/menuCart" />
         <item
             android:id="@+id/nav_orders"
             android:icon="@drawable/ic_order_black_24dp"
-            android:title="Orders" />
+            android:title="@string/menuOrders" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Settings" />
+            android:title="@string/menuSettings" />
     </group>
 
-    <item android:title="Communicate"
-        android:id="@+id/itemCommunicate">
+    <item
+        android:id="@+id/itemCommunicate"
+        android:title="@string/menuCommunicate">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share a product" />
+                android:title="@string/menuShare" />
             <item
                 android:id="@+id/nav_sign_out"
                 android:icon="@drawable/ic_sign_out_black_24dp"
-                android:title="Sign out" />
+                android:title="@string/menuSignOut" />
         </menu>
     </item>
 

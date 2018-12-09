@@ -1,13 +1,16 @@
 package es.uniovi.sdm.compostore;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -25,6 +28,10 @@ public class SignIn extends AppCompatActivity {
     EditText editPhone, editPassword;
     Button btnSignIn;
 
+    //Shared preferences stuff
+    private SharedPreferences mySp;
+    CheckBox checkBoxRememberMe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +41,16 @@ public class SignIn extends AppCompatActivity {
         editPhone = (EditText) findViewById(R.id.editPhone);
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
 
+        mySp = getSharedPreferences("My preferences", Context.MODE_PRIVATE);
+        checkBoxRememberMe = (CheckBox) findViewById(R.id.checkBoxRememberMe);
+
+
         Log.wtf("2","segundo log");
         //Inicializando la base de datos
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_user = database.getReference("User");
+
+        loadPreferences();
 
         Log.wtf("3","tercer log");
         btnSignIn.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +72,12 @@ public class SignIn extends AppCompatActivity {
                             User user = dataSnapshot.child(editPhone.getText().toString()).getValue(User.class);
                             if (user.getPassword().equals(editPassword.getText().toString())) {
                                 {
+                                    //Save preferences if the user says so
+                                    if(checkBoxRememberMe.isChecked()){
+                                        savePreferences();
+                                    }
+
+                                    //Launch UserLoggedActivity
                                     Intent loggedIntent = new Intent(SignIn.this, UserLoggedActivity.class);
                                     Common.currentUser = user;
                                     startActivity(loggedIntent);
@@ -81,6 +100,26 @@ public class SignIn extends AppCompatActivity {
             }
         });
 
-
     }
+
+    public void savePreferences(){ //when the user and password is correct, save them in shared preferences
+
+        //edit preferences
+        final SharedPreferences.Editor mEditor = mySp.edit();
+
+        //save data in shared preferences
+        mEditor.putString("usuario",editPhone.getText().toString());
+        mEditor.putString("contraseña",editPassword.getText().toString());
+        mEditor.commit();
+
+        }
+
+        public void loadPreferences(){
+            //retrieve preferences
+            String phoneNumberPref = mySp.getString("usuario","");
+            String passwordPref = mySp.getString("contraseña","");
+
+            editPhone.setText(phoneNumberPref);
+            editPassword.setText(passwordPref);
+        }
 }
