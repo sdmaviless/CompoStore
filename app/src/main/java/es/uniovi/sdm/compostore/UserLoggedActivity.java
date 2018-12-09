@@ -157,13 +157,17 @@ public class UserLoggedActivity extends AppCompatActivity
         if (id == R.id.nav_products) {
             // Handle the camera action
         } else if (id == R.id.nav_favourites) {
-            launchFavourites();
+            //launchFavourites();
+            launch(Favourites.class);
         } else if (id == R.id.nav_cart) {
-            launchCart();
+            //launchCart();
+            launch(Cart.class);
         } else if (id == R.id.nav_orders) {
-            launchOrders();
+            //launchOrders();
+            launch(Orders.class);
         } else if (id == R.id.nav_settings){
-            launchSettings();
+            //launchSettings();
+            launch(Settings.class);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_sign_out) {
@@ -183,6 +187,15 @@ public class UserLoggedActivity extends AppCompatActivity
         finish();
     }
 
+    public void launch(Class c){
+        Intent loggedIntent = new Intent(UserLoggedActivity.this, c);
+        startActivity(loggedIntent);
+        finish();
+    }
+
+    /*
+
+    //old code
     public void launchFavourites(){
         //Launch FavouritesActivity
         Intent loggedIntent = new Intent(UserLoggedActivity.this, Favourites.class);
@@ -210,6 +223,8 @@ public class UserLoggedActivity extends AppCompatActivity
         startActivity(loggedIntent);
         finish();
     }
+
+   */
 }
 
 

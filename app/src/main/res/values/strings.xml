@@ -23,7 +23,7 @@
     <string name="sample_username">yourusername</string>
     <string name="title_activity_home">Home</string>
 
-    <string name="checkbox_remember_me_message">Remember me next time I log in</string>
+    <string name="checkbox_remember_me_message">Remember me</string>
     <string name="menuProducts">Products</string>
     <string name="menuFavourites">Favourites</string>
     <string name="menuCart">Cart</string>
