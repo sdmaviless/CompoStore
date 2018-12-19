@@ -36,7 +36,6 @@ public class SignIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        Log.wtf("1","primer log");
         editPassword = (EditText) findViewById(R.id.editPassword);
         editPhone = (EditText) findViewById(R.id.editPhone);
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
@@ -45,14 +44,12 @@ public class SignIn extends AppCompatActivity {
         checkBoxRememberMe = (CheckBox) findViewById(R.id.checkBoxRememberMe);
 
 
-        Log.wtf("2","segundo log");
         //Inicializando la base de datos
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_user = database.getReference("User");
 
         loadPreferences();
 
-        Log.wtf("3","tercer log");
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
