@@ -35,7 +35,8 @@
         <activity android:name=".ComponentsList" />
         <activity android:name=".ComponentDetail" />
         <activity android:name=".ComponentsListNotLogged" />
-        <activity android:name=".ComponentDetailNotLogged"></activity>
+        <activity android:name=".ComponentDetailNotLogged" />
+        <activity android:name=".OrderStatus"></activity>
     </application>
 
 </manifest>

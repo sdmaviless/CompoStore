@@ -27,6 +27,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //Add Library
+    implementation 'com.github.mancj:MaterialSearchBar:0.7.1'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'

@@ -46,5 +46,9 @@
     <string name="DefaultCartCompPrice">100.000€</string>
     <string name="DefaultCompDetailPrice">375.40</string>
     <string name="DefaultCompDetailName">Component Name</string>
+    <string name="DefaultOrderStatus">Status</string>
+    <string name="DefaultOrderPhone">123456789</string>
+    <string name="DefaultOrderId">#111111</string>
+    <string name="DefaultOrderAddress">Address</string>
 
 </resources>

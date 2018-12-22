@@ -164,15 +164,20 @@ public class UserLoggedActivity extends AppCompatActivity
         } else if (id == R.id.nav_favourites) {
             launchFavourites();
         } else if (id == R.id.nav_cart) {
-            launchCart();
+            Intent cartIntent = new Intent(UserLoggedActivity.this, Cart.class);
+            startActivity(cartIntent);
         } else if (id == R.id.nav_orders) {
-            launchOrders();
+            Intent orderIntent = new Intent(UserLoggedActivity.this, OrderStatus.class);
+            startActivity(orderIntent);
         } else if (id == R.id.nav_settings){
             launchSettings();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_sign_out) {
-            launchSignOut();
+            //Logout
+            Intent signIn = new Intent(UserLoggedActivity.this, SignIn.class);
+            signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(signIn);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -180,31 +185,11 @@ public class UserLoggedActivity extends AppCompatActivity
         return true;
     }
 
-    public void launchSignOut(){
-        //Launch MainActivity, close session
-        Intent loggedIntent = new Intent(UserLoggedActivity.this, MainActivity.class);
-        Common.currentUser = null;
-        startActivity(loggedIntent);
-        finish();
-    }
+
 
     public void launchFavourites(){
         //Launch FavouritesActivity
         Intent loggedIntent = new Intent(UserLoggedActivity.this, Favourites.class);
-        startActivity(loggedIntent);
-        finish();
-    }
-
-    public void launchCart(){
-        //Launch CartActivity
-        Intent loggedIntent = new Intent(UserLoggedActivity.this, Cart.class);
-        startActivity(loggedIntent);
-        finish();
-    }
-
-    public void launchOrders(){
-        //Launch CartActivity
-        Intent loggedIntent = new Intent(UserLoggedActivity.this, Orders.class);
         startActivity(loggedIntent);
         finish();
     }

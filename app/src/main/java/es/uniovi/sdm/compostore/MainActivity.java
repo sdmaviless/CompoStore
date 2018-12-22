@@ -23,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new Database(getBaseContext()).cleanCart();
-
         btnSignIn = (Button)findViewById(R.id.btnSignIn);
         btnSignUp = (Button)findViewById(R.id.btnSignUp);
         btnContinueUnlogged= (Button)findViewById((R.id.btnContinueUnlogged));
