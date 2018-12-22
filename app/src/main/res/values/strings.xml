@@ -39,5 +39,12 @@
     <string name="sampleSettings">Settings -  Example</string>
 
     <string name="btnBack">Back</string>
+    <string name="PlaceOrder">Place Order</string>
+    <string name="DefaultCartTotal">10.000€</string>
+    <string name="CartTotalLabel">"Total: "</string>
+    <string name="DefaultCartComponent">Component 1</string>
+    <string name="DefaultCartCompPrice">100.000€</string>
+    <string name="DefaultCompDetailPrice">375.40</string>
+    <string name="DefaultCompDetailName">Component Name</string>
 
 </resources>

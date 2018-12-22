@@ -84,13 +84,24 @@
                             android:id="@+id/component_price"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="80dp"
-                            android:layout_marginBottom="4dp"
+                            android:layout_marginStart="60dp"
+                            android:layout_marginEnd="1dp"
+                            android:layout_marginBottom="1dp"
                             android:layout_weight="5"
-                            android:text="375.40 €"
+                            android:text="@string/DefaultCompDetailPrice"
+                            android:textAlignment="textEnd"
                             android:textColor="@color/colorPrimary"
                             android:textSize="18sp"
                             android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="8dp"
+                            android:layout_height="19dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_euro_symbol_black_24dp" />
 
                     </LinearLayout>
 

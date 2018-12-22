@@ -67,6 +67,7 @@ public class SignIn extends AppCompatActivity {
                             //Coger informacion del usuario
                             mDialog.dismiss();
                             User user = dataSnapshot.child(editPhone.getText().toString()).getValue(User.class);
+                            user.setPhone(editPhone.getText().toString()); //Asignar al usuario su telefono
                             if (user.getPassword().equals(editPassword.getText().toString())) {
                                 {
                                     //Save preferences if the user says so
