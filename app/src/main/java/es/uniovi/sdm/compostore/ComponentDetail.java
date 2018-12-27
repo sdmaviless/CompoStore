@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import es.uniovi.sdm.compostore.Common.Common;
 import es.uniovi.sdm.compostore.Database.Database;
 import es.uniovi.sdm.compostore.Model.Component;
 import es.uniovi.sdm.compostore.Model.Order;
@@ -79,7 +80,12 @@ public class ComponentDetail extends AppCompatActivity {
         if(getIntent() !=null){
             componentId = getIntent().getStringExtra("ComponentId");
             if(!componentId.isEmpty()){
-                getDetailComponent(componentId);
+                if(Common.isConnectedToInternet(getBaseContext())){
+                    getDetailComponent(componentId);
+                }else{
+                    Toast.makeText(ComponentDetail.this, "Please check your connection!!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
         }
 

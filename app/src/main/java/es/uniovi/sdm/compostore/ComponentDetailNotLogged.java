@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.google.firebase.database.DataSnapshot;
@@ -16,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import es.uniovi.sdm.compostore.Common.Common;
 import es.uniovi.sdm.compostore.Model.Component;
 
 public class ComponentDetailNotLogged extends AppCompatActivity {
@@ -54,7 +56,12 @@ public class ComponentDetailNotLogged extends AppCompatActivity {
         if(getIntent() !=null){
             componentId = getIntent().getStringExtra("ComponentId");
             if(!componentId.isEmpty()){
-                getDetailComponent(componentId);
+                if(Common.isConnectedToInternet(getBaseContext())){
+                    getDetailComponent(componentId);
+                }else{
+                    Toast.makeText(ComponentDetailNotLogged.this, "Please check your connection!!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
         }
 

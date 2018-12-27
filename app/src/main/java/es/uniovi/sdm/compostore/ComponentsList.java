@@ -24,6 +24,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.uniovi.sdm.compostore.Common.Common;
 import es.uniovi.sdm.compostore.Interface.ItemClickListener;
 import es.uniovi.sdm.compostore.Model.Component;
 import es.uniovi.sdm.compostore.ViewHolder.ComponentViewHolder;
@@ -66,7 +67,13 @@ public class ComponentsList extends AppCompatActivity {
             categoryId = getIntent().getStringExtra("CategoryId");
         }
         if(!categoryId.isEmpty() && categoryId != null){
-            loadListComponents(categoryId);
+            if(Common.isConnectedToInternet(getBaseContext())){
+                loadListComponents(categoryId);
+            }else{
+                Toast.makeText(ComponentsList.this, "Please check your connection!!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
         }
 
         //Barra de busqueda

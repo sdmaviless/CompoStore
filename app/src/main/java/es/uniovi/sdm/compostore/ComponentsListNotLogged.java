@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +23,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.uniovi.sdm.compostore.Common.Common;
 import es.uniovi.sdm.compostore.Interface.ItemClickListener;
 import es.uniovi.sdm.compostore.Model.Component;
 import es.uniovi.sdm.compostore.ViewHolder.ComponentViewHolder;
@@ -62,7 +64,12 @@ public class ComponentsListNotLogged extends AppCompatActivity {
             categoryId = getIntent().getStringExtra("CategoryId");
         }
         if(!categoryId.isEmpty() && categoryId != null){
-            loadListComponents(categoryId);
+            if(Common.isConnectedToInternet(getBaseContext())){
+                loadListComponents(categoryId);
+            }else{
+                Toast.makeText(ComponentsListNotLogged.this, "Please check your connection!!", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
         //Barra de busqueda

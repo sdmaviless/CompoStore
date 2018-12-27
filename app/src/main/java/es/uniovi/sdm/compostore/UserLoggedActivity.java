@@ -94,7 +94,13 @@ public class UserLoggedActivity extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         recycler_menu.setLayoutManager(layoutManager);
 
-        loadMenu();
+
+        if(Common.isConnectedToInternet(this)) {
+            loadMenu();
+        }else{
+            Toast.makeText(this, "Please check your connection !!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
     }
 
@@ -148,6 +154,10 @@ public class UserLoggedActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if(id == R.id.refresh){
+            loadMenu();
         }
 
         return super.onOptionsItemSelected(item);
