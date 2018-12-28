@@ -31,7 +31,12 @@
         <activity android:name=".Favourites" />
         <activity android:name=".Cart" />
         <activity android:name=".Orders" />
-        <activity android:name=".Settings"></activity>
+        <activity android:name=".Settings" />
+        <activity android:name=".ComponentsList" />
+        <activity android:name=".ComponentDetail" />
+        <activity android:name=".ComponentsListNotLogged" />
+        <activity android:name=".ComponentDetailNotLogged" />
+        <activity android:name=".OrderStatus"></activity>
     </application>
 
 </manifest>

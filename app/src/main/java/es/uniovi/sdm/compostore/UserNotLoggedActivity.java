@@ -1,5 +1,6 @@
 package es.uniovi.sdm.compostore;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -40,6 +41,8 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
     RecyclerView recycler_menu;
     RecyclerView.LayoutManager layoutManager;
 
+    FirebaseRecyclerAdapter<Category,MenuViewHolder> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,12 +78,16 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
         layoutManager = new LinearLayoutManager(this);
         recycler_menu.setLayoutManager(layoutManager);
 
-        loadMenu();
+        if(Common.isConnectedToInternet(this)) {
+            loadMenu();
+        }else{
+            Toast.makeText(this, "Please check your connection !!", Toast.LENGTH_SHORT).show();
+            return;
+        }
     }
 
     private void loadMenu() {
-        FirebaseRecyclerAdapter<Category,MenuViewHolder> adapter
-                = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.menu_item, MenuViewHolder.class,category) {
+        adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.menu_item, MenuViewHolder.class,category) {
             @Override
             protected void populateViewHolder(MenuViewHolder viewHolder, Category model, int position) {
                 viewHolder.txMenuName.setText(model.getName());
@@ -90,7 +97,11 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
-                        Toast.makeText(UserNotLoggedActivity.this, "" + clickItem.getName(), Toast.LENGTH_SHORT).show();
+                        //Obtener el ID de la categoria en la que se ha clickado y mandar a la nueva activity
+                        Intent componentsList = new Intent(UserNotLoggedActivity.this, ComponentsListNotLogged.class);
+                        //El id de la categoria es una key asi que solo obtenemos la key de este item
+                        componentsList.putExtra("CategoryId",adapter.getRef(position).getKey());
+                        startActivity(componentsList);
                     }
                 });
             }
@@ -126,6 +137,10 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if(id == R.id.refresh){
+            loadMenu();
         }
 
         return super.onOptionsItemSelected(item);

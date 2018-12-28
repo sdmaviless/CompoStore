@@ -1,18 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@drawable/background"
     tools:context=".Cart">
 
-    <TextView
-        android:id="@+id/txtCart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="176dp"
-        android:text="@string/sampleCart"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+   <android.support.v7.widget.RecyclerView
+       android:id="@+id/listCart"
+       android:background="@android:color/transparent"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"/>
+
+   <android.support.v7.widget.CardView
+       android:layout_alignParentBottom="true"
+       app:cardBackgroundColor="@color/colorPrimary"
+       android:layout_width="match_parent"
+       android:layout_height="100dp">
+
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+           <LinearLayout
+               android:layout_marginBottom="8dp"
+               android:gravity="center_vertical"
+               android:orientation="horizontal"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/CartTotalLabel"
+                   android:textColor="@android:color/white"
+                   android:textSize="20sp" />
+
+               <TextView
+                   android:id="@+id/total"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/DefaultCartTotal"
+                   android:textColor="@android:color/white"
+                   android:textSize="24sp" />
+
+           </LinearLayout>
+
+           <info.hoang8f.widget.FButton
+               android:id="@+id/btnPlaceOrder"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_alignParentBottom="true"
+               android:layout_marginRight="8dp"
+               android:layout_marginLeft="8dp"
+               android:layout_margin="8dp"
+               android:text="@string/PlaceOrder"
+               android:textColor="@android:color/white"
+               app:cornerRadius="4dp"
+               app:fButtonColor="@color/btnSignIn"
+               app:shadowColor="@android:color/black"
+               app:shadowEnabled="true"
+               app:shadowHeight="5dp" />
+
+
+       </RelativeLayout>
+
+
+
+   </android.support.v7.widget.CardView>
+</RelativeLayout>
