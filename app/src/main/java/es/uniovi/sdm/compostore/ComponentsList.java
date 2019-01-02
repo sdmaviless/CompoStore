@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.uniovi.sdm.compostore.Common.Common;
+import es.uniovi.sdm.compostore.Database.Database;
 import es.uniovi.sdm.compostore.Interface.ItemClickListener;
 import es.uniovi.sdm.compostore.Model.Component;
 import es.uniovi.sdm.compostore.ViewHolder.ComponentViewHolder;
@@ -46,6 +47,9 @@ public class ComponentsList extends AppCompatActivity {
     List<String> suggestList = new ArrayList<>();
     MaterialSearchBar materialSearchBar;
 
+    //favourites
+    Database localDB;
+
 
 
     @Override
@@ -56,6 +60,8 @@ public class ComponentsList extends AppCompatActivity {
         //Firebase
         database = FirebaseDatabase.getInstance();
         componentList = database.getReference("Components");
+
+        localDB = new Database(this);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_component);
         recyclerView.setHasFixedSize(true);
@@ -186,9 +192,30 @@ public class ComponentsList extends AppCompatActivity {
                 //Mismo que: Select * from Components where CategoryId = ..
                 componentList.orderByChild("CategoryId").equalTo(categoryId)) {
         @Override
-        protected void populateViewHolder(ComponentViewHolder viewHolder, Component model, int position) {
+        protected void populateViewHolder(final ComponentViewHolder viewHolder, final Component model, final int position) {
             viewHolder.component_name.setText(model.getName());
             Picasso.with(getBaseContext()).load(model.getImage()).into(viewHolder.component_image);
+
+            //add favourites
+            if(localDB.isFavourite(adapter.getRef(position).getKey()))
+                viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
+
+            //click to change state of favourites
+            viewHolder.fav_image.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    if(!localDB.isFavourite(adapter.getRef(position).getKey())){
+                        localDB.addToFavourites(adapter.getRef(position).getKey());
+                        viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
+                        Toast.makeText(ComponentsList.this, model.getName()+" was added to favourites",Toast.LENGTH_SHORT).show();
+                    }else{
+                        localDB.removeFromFavourites(adapter.getRef(position).getKey());
+                        viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
+                        Toast.makeText(ComponentsList.this, model.getName()+" was removed from favourites",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
             final Component local = model;
             viewHolder.setItemClickListener(new ItemClickListener() {

@@ -12,7 +12,7 @@ public class ComponentViewHolder
     extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView component_name;
-    public ImageView component_image;
+    public ImageView component_image,fav_image;
 
     private ItemClickListener itemClickListener;
 
@@ -25,6 +25,7 @@ public class ComponentViewHolder
 
         component_name = (TextView) itemView.findViewById(R.id.component_name);
         component_image =(ImageView) itemView.findViewById(R.id.component_image);
+        fav_image =(ImageView) itemView.findViewById(R.id.fav);
 
         itemView.setOnClickListener(this);
     }
