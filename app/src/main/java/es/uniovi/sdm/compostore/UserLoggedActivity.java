@@ -3,7 +3,6 @@ package es.uniovi.sdm.compostore;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -17,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +41,8 @@ public class UserLoggedActivity extends AppCompatActivity
     RecyclerView recycler_menu;
     RecyclerView.LayoutManager layoutManager;
 
+    FirebaseRecyclerAdapter<Category,MenuViewHolder> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +60,8 @@ public class UserLoggedActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent cartIntent = new Intent(UserLoggedActivity.this, Cart.class);
+                startActivity(cartIntent);
             }
         });
 
@@ -92,13 +92,18 @@ public class UserLoggedActivity extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         recycler_menu.setLayoutManager(layoutManager);
 
-        loadMenu();
+
+        if(Common.isConnectedToInternet(this)) {
+            loadMenu();
+        }else{
+            Toast.makeText(this, "Please check your connection !!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
     }
 
     private void loadMenu() {
-        FirebaseRecyclerAdapter<Category,MenuViewHolder> adapter
-                = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.menu_item, MenuViewHolder.class,category) {
+         adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.menu_item, MenuViewHolder.class,category) {
             @Override
             protected void populateViewHolder(MenuViewHolder viewHolder, Category model, int position) {
                 viewHolder.txMenuName.setText(model.getName());
@@ -108,7 +113,11 @@ public class UserLoggedActivity extends AppCompatActivity
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
-                        Toast.makeText(UserLoggedActivity.this, "" + clickItem.getName(), Toast.LENGTH_SHORT).show();
+                        //Obtener el ID de la categoria en la que se ha clickado y mandar a la nueva activity
+                        Intent componentsList = new Intent(UserLoggedActivity.this, ComponentsList.class);
+                        //El id de la categoria es una key asi que solo obtenemos la key de este item
+                        componentsList.putExtra("CategoryId",adapter.getRef(position).getKey());
+                        startActivity(componentsList);
                     }
                 });
             }
@@ -145,6 +154,10 @@ public class UserLoggedActivity extends AppCompatActivity
             return true;
         }
 
+        if(id == R.id.refresh){
+            loadMenu();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -157,14 +170,16 @@ public class UserLoggedActivity extends AppCompatActivity
         if (id == R.id.nav_products) {
             // Handle the camera action
         } else if (id == R.id.nav_favourites) {
-            //launchFavourites();
+           // launchFavourites();
             launch(Favourites.class);
         } else if (id == R.id.nav_cart) {
-            //launchCart();
+            //Intent cartIntent = new Intent(UserLoggedActivity.this, Cart.class);
+            //startActivity(cartIntent);
             launch(Cart.class);
         } else if (id == R.id.nav_orders) {
-            //launchOrders();
-            launch(Orders.class);
+            //Intent orderIntent = new Intent(UserLoggedActivity.this, OrderStatus.class);
+            //startActivity(orderIntent);
+            launch(OrderStatus.class);
         } else if (id == R.id.nav_settings){
             //launchSettings();
             launch(Settings.class);
@@ -172,6 +187,7 @@ public class UserLoggedActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_sign_out) {
             launchSignOut();
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -179,12 +195,11 @@ public class UserLoggedActivity extends AppCompatActivity
         return true;
     }
 
-    public void launchSignOut(){
-        //Launch MainActivity, close session
-        Intent loggedIntent = new Intent(UserLoggedActivity.this, MainActivity.class);
-        Common.currentUser = null;
-        startActivity(loggedIntent);
-        finish();
+    private void launchSignOut() {
+        //Logout
+        Intent signIn = new Intent(UserLoggedActivity.this, SignIn.class);
+        signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(signIn);
     }
 
     public void launch(Class c){
@@ -192,27 +207,10 @@ public class UserLoggedActivity extends AppCompatActivity
         startActivity(loggedIntent);
         finish();
     }
-
-    /*
-
-    //old code
+     /*
     public void launchFavourites(){
         //Launch FavouritesActivity
         Intent loggedIntent = new Intent(UserLoggedActivity.this, Favourites.class);
-        startActivity(loggedIntent);
-        finish();
-    }
-
-    public void launchCart(){
-        //Launch CartActivity
-        Intent loggedIntent = new Intent(UserLoggedActivity.this, Cart.class);
-        startActivity(loggedIntent);
-        finish();
-    }
-
-    public void launchOrders(){
-        //Launch CartActivity
-        Intent loggedIntent = new Intent(UserLoggedActivity.this, Orders.class);
         startActivity(loggedIntent);
         finish();
     }
@@ -224,7 +222,7 @@ public class UserLoggedActivity extends AppCompatActivity
         finish();
     }
 
-   */
+    */
 }
 
 

@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import es.uniovi.sdm.compostore.Common.Common;
 import es.uniovi.sdm.compostore.Model.User;
+import io.paperdb.Paper;
 
 public class SignIn extends AppCompatActivity {
 
@@ -29,7 +30,7 @@ public class SignIn extends AppCompatActivity {
     Button btnSignIn;
 
     //Shared preferences stuff
-    private SharedPreferences mySp;
+    //private SharedPreferences mySp;
     CheckBox checkBoxRememberMe;
 
     @Override
@@ -40,8 +41,9 @@ public class SignIn extends AppCompatActivity {
         editPhone = (EditText) findViewById(R.id.editPhone);
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
 
-        mySp = getSharedPreferences("My preferences", Context.MODE_PRIVATE);
+        //mySp = getSharedPreferences("My preferences", Context.MODE_PRIVATE);
         checkBoxRememberMe = (CheckBox) findViewById(R.id.checkBoxRememberMe);
+        Paper.init(this);
 
 
         //Inicializando la base de datos
@@ -54,8 +56,6 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-
                     final ProgressDialog mDialog = new ProgressDialog(SignIn.this);
                     mDialog.setMessage("Please wait...");
                     mDialog.show();
@@ -64,12 +64,14 @@ public class SignIn extends AppCompatActivity {
 
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                             //Comprobar que el usuario existe en la base de datos
                             if (dataSnapshot.child(editPhone.getText().toString()).exists()) {
                                 //Coger informacion del usuario
                                 mDialog.dismiss();
                                 User user = dataSnapshot.child(editPhone.getText().toString()).getValue(User.class);
                                 user.setPhone(editPhone.getText().toString()); //Asignar al usuario su telefono
+
                                 if (user.getPassword().equals(editPassword.getText().toString())) {
                                     {
                                         //Save preferences if the user says so
@@ -103,7 +105,7 @@ public class SignIn extends AppCompatActivity {
     }
 
     public void savePreferences() { //when the user and password is correct, save them in shared preferences
-
+        /**
         //edit preferences
         final SharedPreferences.Editor mEditor = mySp.edit();
 
@@ -111,15 +113,28 @@ public class SignIn extends AppCompatActivity {
         mEditor.putString("usuario", editPhone.getText().toString());
         mEditor.putString("contraseña", editPassword.getText().toString());
         mEditor.commit();
+         */
+        Paper.book().write(Common.USER_KEY,editPhone.getText().toString());
+        Paper.book().write(Common.PWD_KEY,editPassword.getText().toString());
 
     }
 
     public void loadPreferences() {
+        /**
         //retrieve preferences
         String phoneNumberPref = mySp.getString("usuario", "");
         String passwordPref = mySp.getString("contraseña", "");
+*/
+
+        //retrieve preferences
+        String phoneNumberPref = Paper.book().read(Common.USER_KEY);
+        String passwordPref = Paper.book().read(Common.PWD_KEY);
 
         editPhone.setText(phoneNumberPref);
         editPassword.setText(passwordPref);
+
+        //launch activity automatically
+        // TODO: if the user specifies so in the settings, don't login automatically, just write user and password
+
     }
 }
