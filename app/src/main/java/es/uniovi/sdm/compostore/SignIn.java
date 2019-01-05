@@ -1,5 +1,6 @@
 package es.uniovi.sdm.compostore;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -102,6 +103,14 @@ public class SignIn extends AppCompatActivity {
                 }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        //Go back to products
+        Intent loggedIntent = new Intent(SignIn.this, MainActivity.class);
+        startActivity(loggedIntent);
+        finish();
     }
 
     public void savePreferences() { //when the user and password is correct, save them in shared preferences

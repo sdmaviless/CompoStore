@@ -25,6 +25,7 @@
         app:itemTextColor="@android:color/white"
         app:itemIconTint="@android:color/white"
         app:headerLayout="@layout/nav_header_user_logged"
-        app:menu="@menu/activity_user_logged_drawer" />
+        app:menu="@menu/activity_user_logged_drawer"
+        />
 
 </android.support.v4.widget.DrawerLayout>

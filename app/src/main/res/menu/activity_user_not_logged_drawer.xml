@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_products"
             android:icon="@drawable/ic_products_black_24dp"
@@ -13,19 +15,13 @@
             android:icon="@drawable/ic_menu_manage"
             android:title="Settings" />
     </group>
-
-    <item android:title="Communicate"
-        android:id="@+id/itemCommunicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share a product" />
-            <item
-                android:id="@+id/nav_login"
-                android:icon="@drawable/ic_log_in_black_24dp"
-                android:title="Login" />
-        </menu>
-    </item>
+    <group
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/ic_log_in_black_24dp"
+            android:title="Login" />
+    </group>
 
 </menu>

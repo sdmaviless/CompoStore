@@ -66,11 +66,13 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
         navigationView.setNavigationItemSelectedListener(this);
 
         //Cambiar color y tamaño de titulo de menu
+        /**
         Menu menu = navigationView.getMenu();
         MenuItem communicate = menu.findItem(R.id.itemCommunicate);
         SpannableString s = new SpannableString(communicate.getTitle());
         s.setSpan(new TextAppearanceSpan(this, R.style.itemTitle), 0, s.length(), 0);
         communicate.setTitle(s);
+        */
 
         //Cargar Menu
         recycler_menu = (RecyclerView)findViewById(R.id.recycler_menu);
@@ -156,11 +158,8 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
             // Handle the camera action
         } else if (id == R.id.nav_settings) {
 
-        } else if (id == R.id.nav_share) {
-
         } else if (id == R.id.nav_login) {
 
-        } else if (id == R.id.nav_share) {
 
 
         }

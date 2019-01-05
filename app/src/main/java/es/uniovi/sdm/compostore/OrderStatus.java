@@ -1,5 +1,6 @@
 package es.uniovi.sdm.compostore;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,6 +40,14 @@ public class OrderStatus extends AppCompatActivity {
 
         loadOrders(Common.currentUser.getPhone());
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        //Go back to products
+        Intent loggedIntent = new Intent(OrderStatus.this, UserLoggedActivity.class);
+        startActivity(loggedIntent);
+        finish();
     }
 
     private void loadOrders(String phone) {

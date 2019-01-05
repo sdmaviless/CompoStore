@@ -75,6 +75,7 @@ public class UserLoggedActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //Cambiar color y tamaño de titulo de menu
+
         Menu menu = navigationView.getMenu();
         MenuItem communicate = menu.findItem(R.id.itemCommunicate);
         SpannableString s = new SpannableString(communicate.getTitle());
@@ -183,7 +184,6 @@ public class UserLoggedActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings){
             //launchSettings();
             launch(Settings.class);
-        } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_sign_out) {
             launchSignOut();
