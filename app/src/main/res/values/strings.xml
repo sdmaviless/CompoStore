@@ -51,5 +51,7 @@
     <string name="DefaultOrderId">#111111</string>
     <string name="DefaultOrderAddress">Address</string>
     <string name="RefreshString">Refresh</string>
+    <string name="component_name">Component name</string>
+    <string name="description">Description</string>
 
 </resources>

@@ -1,10 +1,17 @@
 package es.uniovi.sdm.compostore;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +27,9 @@ import com.squareup.picasso.Picasso;
 import es.uniovi.sdm.compostore.Common.Common;
 import es.uniovi.sdm.compostore.Model.Component;
 
-public class ComponentDetailNotLogged extends AppCompatActivity {
+public class ComponentDetailNotLogged extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    //Menu drawer
+    private DrawerLayout mDrawerLayout;
 
     TextView component_name, component_price, component_description;
     ImageView component_image;
@@ -36,9 +45,25 @@ public class ComponentDetailNotLogged extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_component_detail_not_logged);
 
+        //Menu drawer
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Menu");
+        setSupportActionBar(toolbar);
+
         //Firebase
         database = FirebaseDatabase.getInstance();
         components = database.getReference("Components");
+
+        //Menu drawer
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        //Menu drawer
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         //Inicializar la vista
 
@@ -88,5 +113,48 @@ public class ComponentDetailNotLogged extends AppCompatActivity {
 
             }
         });
+    }
+    //Menu drawer
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_products) {
+            lauchProducts();
+        } else if (id == R.id.nav_settings) {
+            launch(Settings.class);
+        } else if (id == R.id.nav_login) {
+            launchSignOut();
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    public void launch(Class c){
+        Intent loggedIntent = new Intent(ComponentDetailNotLogged.this, c);
+        startActivity(loggedIntent);
+        finish();
+    }
+    private void launchSignOut() {
+        //Logout
+        Intent signIn = new Intent(ComponentDetailNotLogged.this, SignIn.class);
+        signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(signIn);
+    }
+    private void lauchProducts(){
+        Intent products = new Intent(ComponentDetailNotLogged.this, UserNotLoggedActivity.class);
+        products.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(products);
     }
 }
