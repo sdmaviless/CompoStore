@@ -1,32 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
-
-    <include
-        layout="@layout/app_bar_component_detail_not_logged"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-
-        android:background="@color/overlayBackground"
-        app:itemTextColor="@android:color/white"
-        app:itemIconTint="@android:color/white"
-        app:headerLayout="@layout/nav_header_activity_user_not_logged"
-        app:menu="@menu/activity_user_not_logged_drawer" />
-</android.support.v4.widget.DrawerLayout>
-<!--
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -93,14 +65,14 @@
 
                     <TextView
                         android:id="@+id/component_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:padding="12dp"
-                        android:text="Component Name"
+                        android:text="@string/component_name"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:id="@+id/layout_price"
@@ -129,7 +101,8 @@
                             android:layout_marginTop="4dp"
                             android:layout_marginRight="5dp"
                             android:layout_weight="1"
-                            app:srcCompat="@drawable/ic_euro_symbol_black_24dp" />
+                            app:srcCompat="@drawable/ic_euro_symbol_black_24dp"
+                            android:contentDescription="TODO" />
 
                     </LinearLayout>
 
@@ -148,7 +121,7 @@
                     android:layout_marginTop="12dp"
                     android:lineSpacingMultiplier="1.5"
                     android:padding="12dp"
-                    android:text="Description"
+                    android:text="@string/description"
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
                     android:layout_width="wrap_content"
@@ -163,4 +136,3 @@
     </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
--->

@@ -118,7 +118,7 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            launchMain();
         }
     }
 
@@ -157,14 +157,28 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
         if (id == R.id.nav_products) {
             // Handle the camera action
         } else if (id == R.id.nav_settings) {
-
+            launch(Settings.class);
         } else if (id == R.id.nav_login) {
-
-
-
+            launchSignOut();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    public void launch(Class c){
+        Intent loggedIntent = new Intent(UserNotLoggedActivity.this, c);
+        startActivity(loggedIntent);
+        finish();
+    }
+    private void launchSignOut() {
+        //Logout
+        Intent signIn = new Intent(UserNotLoggedActivity.this, SignIn.class);
+        signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(signIn);
+    }
+    private void launchMain() {
+        Intent mainActivity = new Intent(UserNotLoggedActivity.this, MainActivity.class);
+        mainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainActivity);
     }
 }
