@@ -48,6 +48,8 @@ import info.hoang8f.widget.FButton;
 
 public class Cart extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private DrawerLayout mDrawerLayout;
+
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
@@ -60,11 +62,9 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
     List<Order> cart = new ArrayList<>();
 
     CartAdapter adapter;
-    //
-    private DrawerLayout mDrawerLayout;
+
+
     TextView txFullName;
-    RecyclerView recycler_menu;
-    RecyclerView.LayoutManager menuLayoutManager;
     FirebaseRecyclerAdapter<Category,MenuViewHolder> menuAdapter;
     DatabaseReference category;
 
@@ -75,7 +75,7 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
         setContentView(R.layout.activity_cart);
         //setContentView(R.layout.cart_layout);
 
-        //1
+        //Menu Drawer
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Menu");
         setSupportActionBar(toolbar);
@@ -85,11 +85,11 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
         requests = database.getReference("Requests");
         category = database.getReference("Category");
 
-        //2
+        //Menu drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.setDrawerListener(toggle);
+        mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -97,11 +97,11 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
 
         //Cambiar color y tamaño de titulo de menu
 
-        Menu menu = navigationView.getMenu();
-        MenuItem communicate = menu.findItem(R.id.itemCommunicate);
-        SpannableString s = new SpannableString(communicate.getTitle());
-        s.setSpan(new TextAppearanceSpan(this, R.style.itemTitle), 0, s.length(), 0);
-        communicate.setTitle(s);
+//        Menu menu = navigationView.getMenu();
+//        MenuItem communicate = menu.findItem(R.id.itemCommunicate);
+//        SpannableString s = new SpannableString(communicate.getTitle());
+//        s.setSpan(new TextAppearanceSpan(this, R.style.itemTitle), 0, s.length(), 0);
+//        communicate.setTitle(s);
 
         //Mostrar nombre del usuario conectado
         View headerView = navigationView.getHeaderView(0);
@@ -133,11 +133,16 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
 
         loadListComponents();
 
-        //Cargar menu
-        recycler_menu = (RecyclerView)findViewById(R.id.recycler_menu);
-        recycler_menu.setHasFixedSize(true);
-        menuLayoutManager = new LinearLayoutManager(this);
-        recycler_menu.setLayoutManager(menuLayoutManager);
+//        recyclerView = (RecyclerView) findViewById(R.id.recycler_component);
+//        recyclerView.setHasFixedSize(true);
+//        layoutManager = new LinearLayoutManager(this);
+//        recyclerView.setLayoutManager(layoutManager);
+
+//        //Cargar menu
+//        recycler_menu = (RecyclerView)findViewById(R.id.recycler_menu);
+//        recycler_menu.setHasFixedSize(true);
+//        menuLayoutManager = new LinearLayoutManager(this);
+//        recycler_menu.setLayoutManager(menuLayoutManager);
 
 
         if(Common.isConnectedToInternet(this)) {
@@ -169,12 +174,21 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
                 });
             }
         };
-        recycler_menu.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onBackPressed() {
-        //Go back to products
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            goProducts();
+
+        }
+    }
+
+    private void goProducts() {
         Intent loggedIntent = new Intent(Cart.this, UserLoggedActivity.class);
         startActivity(loggedIntent);
         finish();
@@ -282,14 +296,12 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
         int id = menuItem.getItemId();
 
         if (id == R.id.nav_products) {
-            // Handle the camera action
+            goProducts();
         } else if (id == R.id.nav_favourites) {
             // launchFavourites();
             launch(Favourites.class);
         } else if (id == R.id.nav_cart) {
-            //Intent cartIntent = new Intent(UserLoggedActivity.this, Cart.class);
-            //startActivity(cartIntent);
-            launch(Cart.class);
+            onBackPressed();
         } else if (id == R.id.nav_orders) {
             //Intent orderIntent = new Intent(UserLoggedActivity.this, OrderStatus.class);
             //startActivity(orderIntent);
@@ -307,7 +319,6 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
     private void launchSignOut() {
         //Logout
         Intent signIn = new Intent(Cart.this, SignIn.class);

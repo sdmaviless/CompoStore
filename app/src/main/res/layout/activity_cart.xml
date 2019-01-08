@@ -10,7 +10,7 @@
     tools:openDrawer="start">
 
     <include
-        layout="@layout/app_bar_user_logged"
+        layout="@layout/app_bar_cart"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -27,7 +27,7 @@
         app:headerLayout="@layout/nav_header_user_logged"
         app:menu="@menu/activity_user_logged_drawer"
         />
-
+<!--
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -101,5 +101,5 @@
    </android.support.v7.widget.CardView>
 
 </RelativeLayout>
-
+-->
 </android.support.v4.widget.DrawerLayout>
