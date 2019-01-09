@@ -28,6 +28,8 @@ import es.uniovi.sdm.compostore.Common.Common;
 import es.uniovi.sdm.compostore.Database.Database;
 import es.uniovi.sdm.compostore.Interface.ItemClickListener;
 import es.uniovi.sdm.compostore.Model.Component;
+import es.uniovi.sdm.compostore.Model.Favorites;
+import es.uniovi.sdm.compostore.Model.Order;
 import es.uniovi.sdm.compostore.ViewHolder.ComponentViewHolder;
 
 public class ComponentsList extends AppCompatActivity {
@@ -49,7 +51,6 @@ public class ComponentsList extends AppCompatActivity {
 
     //favourites
     Database localDB;
-
 
 
     @Override
@@ -194,10 +195,38 @@ public class ComponentsList extends AppCompatActivity {
         @Override
         protected void populateViewHolder(final ComponentViewHolder viewHolder, final Component model, final int position) {
             viewHolder.component_name.setText(model.getName());
+            viewHolder.component_price.setText(String.format("€ %s", model.getPrice().toString()));
             Picasso.with(getBaseContext()).load(model.getImage()).into(viewHolder.component_image);
 
+            //Quick cart
+
+                viewHolder.quick_cart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean isExists = new Database(getBaseContext()).checkComponentExists(adapter.getRef(position).getKey(), Common.currentUser.getPhone());
+                        if (!isExists) {
+                            new Database(getBaseContext()).addToCart(new Order(
+                                    Common.currentUser.getPhone(),
+                                    adapter.getRef(position).getKey(),
+                                    model.getName(),
+                                    "1",
+                                    model.getPrice(),
+                                    model.getDiscount(),
+                                    model.getImage()
+                            ));
+                        } else {
+                            new Database(getBaseContext()).increaseCart(Common.currentUser.getPhone(), adapter.getRef(position).getKey());
+                        }
+                        Toast.makeText(ComponentsList.this, "Added to Cart", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             //add favourites
-            if(localDB.isFavourite(adapter.getRef(position).getKey()))
+            if(localDB.isFavorite(adapter.getRef(position).getKey(), Common.currentUser.getPhone()))
+                viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
+
+            //Click to share
+            if(localDB.isFavorite(adapter.getRef(position).getKey(), Common.currentUser.getPhone()))
                 viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
 
             //click to change state of favourites
@@ -205,14 +234,26 @@ public class ComponentsList extends AppCompatActivity {
 
                 @Override
                 public void onClick(View v) {
-                    if(!localDB.isFavourite(adapter.getRef(position).getKey())){
-                        localDB.addToFavourites(adapter.getRef(position).getKey());
+
+                    Favorites favorites = new Favorites();
+                    favorites.setComponentId(adapter.getRef(position).getKey());
+                    favorites.setComponentName(model.getName());
+                    favorites.setComponentDescription(model.getDescription());
+                    favorites.setComponentDiscount(model.getDiscount());
+                    favorites.setComponentImage(model.getImage());
+                    favorites.setComponentCategoryId(model.getCategoryId());
+                    favorites.setUserPhone(Common.currentUser.getPhone());
+                    favorites.setComponentPrice(model.getPrice());
+
+
+                    if(!localDB.isFavorite(adapter.getRef(position).getKey(), Common.currentUser.getPhone())){
+                        localDB.addToFavorites(favorites);
                         viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
-                        Toast.makeText(ComponentsList.this, model.getName()+" was added to favourites",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ComponentsList.this, model.getName()+" was added to favorites",Toast.LENGTH_SHORT).show();
                     }else{
-                        localDB.removeFromFavourites(adapter.getRef(position).getKey());
+                        localDB.removeFromFavorites(adapter.getRef(position).getKey(), Common.currentUser.getPhone());
                         viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
-                        Toast.makeText(ComponentsList.this, model.getName()+" was removed from favourites",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ComponentsList.this, model.getName()+" was removed from favorites",Toast.LENGTH_SHORT).show();
                     }
                 }
             });

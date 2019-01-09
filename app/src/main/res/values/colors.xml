@@ -12,5 +12,5 @@
 
     <color name="mywhite">#FFFFFF</color>
 
-
+    <color name = "bgRowBackground">#FA315B</color>
 </resources>

@@ -26,6 +26,13 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    //Slider
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.daimajia.slider:library:1.1.5@aar'
+
+    //CounterFAB
+    implementation 'com.github.andremion:counterfab:1.0.1'
+
     //Add Library
     implementation 'io.paperdb:paperdb:2.1'
     implementation 'com.github.mancj:MaterialSearchBar:0.7.1'

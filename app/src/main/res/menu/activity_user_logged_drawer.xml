@@ -7,9 +7,9 @@
             android:icon="@drawable/ic_products_black_24dp"
             android:title="@string/menuProducts" />
         <item
-            android:id="@+id/nav_favourites"
+            android:id="@+id/nav_favorites"
             android:icon="@drawable/ic_stars_black_24dp"
-            android:title="@string/menuFavourites" />
+            android:title="@string/menuFavorites" />
         <item
             android:id="@+id/nav_cart"
             android:icon="@drawable/ic_shopping_cart_black_24dp"

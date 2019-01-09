@@ -25,7 +25,7 @@
 
     <string name="checkbox_remember_me_message">Remember me</string>
     <string name="menuProducts">Products</string>
-    <string name="menuFavourites">Favourites</string>
+    <string name="menuFavorites">Favorites</string>
     <string name="menuCart">Cart</string>
     <string name="menuOrders">Orders</string>
     <string name="menuSettings">Settings</string>
@@ -53,5 +53,6 @@
     <string name="RefreshString">Refresh</string>
     <string name="component_name">Component name</string>
     <string name="description">Description</string>
+    <string name="DefaultComponentName">Name of component</string>
 
 </resources>

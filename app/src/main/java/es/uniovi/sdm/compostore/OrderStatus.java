@@ -90,9 +90,8 @@ public class OrderStatus extends AppCompatActivity implements NavigationView.OnN
 
         if (id == R.id.nav_products) {
             goProducts();
-        } else if (id == R.id.nav_favourites) {
-            // launchFavourites();
-            launch(Favourites.class);
+        } else if (id == R.id.nav_favorites) {
+            startActivity(new Intent(OrderStatus.this, FavoritesActivity.class));
         } else if (id == R.id.nav_cart) {
             launch(Cart.class);
         } else if (id == R.id.nav_orders) {

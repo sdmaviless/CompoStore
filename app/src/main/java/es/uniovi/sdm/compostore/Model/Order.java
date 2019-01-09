@@ -1,21 +1,33 @@
 package es.uniovi.sdm.compostore.Model;
 
 public class Order {
+    private String UserPhone;
     private String ProductId;
     private String ProductName;
     private String Quantity;
     private String Price;
     private String Discount;
+    private String Image;
 
     public Order() {
     }
 
-    public Order(String productId, String productName, String quantity, String price, String discount) {
+    public Order(String userPhone, String productId, String productName, String quantity, String price, String discount, String image) {
+        UserPhone = userPhone;
         ProductId = productId;
         ProductName = productName;
         Quantity = quantity;
         Price = price;
         Discount = discount;
+        Image = image;
+    }
+
+    public String getUserPhone() {
+        return UserPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        UserPhone = userPhone;
     }
 
     public String getProductId() {
@@ -56,5 +68,13 @@ public class Order {
 
     public void setDiscount(String discount) {
         Discount = discount;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String image) {
+        Image = image;
     }
 }

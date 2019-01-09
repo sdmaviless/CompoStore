@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -155,7 +154,7 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
     private void startSearch(CharSequence text) {
         searchAdapter = new FirebaseRecyclerAdapter<Component, ComponentViewHolder>(
                 Component.class,
-                R.layout.component_item,
+                R.layout.component_item_not_logged,
                 ComponentViewHolder.class,
                 componentListNotLogged.orderByChild("Name").equalTo(text.toString()) //Comparamos los nombres
         ) {
@@ -202,7 +201,7 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
     private void loadListComponents(String categoryId) {
         adapter = new FirebaseRecyclerAdapter<Component, ComponentViewHolder>(
                 Component.class,
-                R.layout.component_item,
+                R.layout.component_item_not_logged,
                 ComponentViewHolder.class,
                 //Mismo que: Select * from Components where CategoryId = ..
                 componentListNotLogged.orderByChild("CategoryId").equalTo(categoryId)) {

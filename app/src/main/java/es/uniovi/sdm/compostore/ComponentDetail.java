@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.andremion.counterfab.CounterFab;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,7 +29,7 @@ public class ComponentDetail extends AppCompatActivity {
     TextView component_name, component_price, component_description;
     ImageView component_image;
     CollapsingToolbarLayout collapsingToolbarLayout;
-    FloatingActionButton btnCart;
+    CounterFab btnCart;
     ElegantNumberButton numberButton;
 
     String componentId="";
@@ -49,22 +50,26 @@ public class ComponentDetail extends AppCompatActivity {
 
         //Inicializar la vista
         numberButton = (ElegantNumberButton) findViewById(R.id.number_button);
-        btnCart = (FloatingActionButton) findViewById(R.id.btnCart);
+        btnCart = (CounterFab) findViewById(R.id.btnCart);
 
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new Database(getBaseContext()).addToCart(new Order(
+                        Common.currentUser.getPhone(),
                         componentId,
                         currentComponent.getName(),
                         numberButton.getNumber(),
                         currentComponent.getPrice(),
-                        currentComponent.getDiscount()
+                        currentComponent.getDiscount(),
+                        currentComponent.getImage()
                 ));
 
                 Toast.makeText(ComponentDetail.this, "Added to Cart", Toast.LENGTH_SHORT).show();
             }
         });
+
+        btnCart.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
 
         component_description = (TextView) findViewById(R.id.component_description);
         component_name = (TextView) findViewById(R.id.component_name);
