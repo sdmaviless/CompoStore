@@ -9,7 +9,7 @@
         <item
             android:id="@+id/nav_products"
             android:icon="@drawable/ic_products_black_24dp"
-            android:title="Products" />
+            android:title="@string/menuProducts" />
     </group>
     <group
         android:layout_width="wrap_content"
@@ -17,7 +17,7 @@
         <item
             android:id="@+id/nav_login"
             android:icon="@drawable/ic_log_in_black_24dp"
-            android:title="Login" />
+            android:title="@string/menuLogin" />
     </group>
 
 </menu>
