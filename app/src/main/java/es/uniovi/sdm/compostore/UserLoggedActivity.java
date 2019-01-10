@@ -90,6 +90,7 @@ public class UserLoggedActivity extends AppCompatActivity
                         Intent componentsList = new Intent(UserLoggedActivity.this, ComponentsList.class);
                         //El id de la categoria es una key asi que solo obtenemos la key de este item
                         componentsList.putExtra("CategoryId",adapter.getRef(position).getKey());
+                        componentsList.putExtra("CategoryName", adapter.getItem(position).getName());
                         startActivity(componentsList);
                     }
                 });

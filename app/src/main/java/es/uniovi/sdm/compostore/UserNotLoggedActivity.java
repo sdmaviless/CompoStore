@@ -87,6 +87,7 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
                         Intent componentsList = new Intent(UserNotLoggedActivity.this, ComponentsListNotLogged.class);
                         //El id de la categoria es una key asi que solo obtenemos la key de este item
                         componentsList.putExtra("CategoryId",adapter.getRef(position).getKey());
+                        componentsList.putExtra("CategoryName", adapter.getItem(position).getName());
                         startActivity(componentsList);
                     }
                 });
@@ -161,7 +162,7 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
                             .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                                 @Override
                                 public void onSliderClick(BaseSliderView slider) {
-                                    Intent intent = new Intent (UserNotLoggedActivity.this, ComponentDetail.class);
+                                    Intent intent = new Intent (UserNotLoggedActivity.this, ComponentDetailNotLogged.class);
                                     //Mandamos el id del componente a ComponentDetail
                                     intent.putExtras(textSliderView.getBundle());
                                     startActivity(intent);

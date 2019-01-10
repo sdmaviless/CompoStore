@@ -1,10 +1,17 @@
 package es.uniovi.sdm.compostore;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,13 +31,17 @@ import es.uniovi.sdm.compostore.Database.Database;
 import es.uniovi.sdm.compostore.Model.Component;
 import es.uniovi.sdm.compostore.Model.Order;
 
-public class ComponentDetail extends AppCompatActivity {
+public class ComponentDetail extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+
+    private DrawerLayout mDrawerLayout;
 
     TextView component_name, component_price, component_description;
     ImageView component_image;
     CollapsingToolbarLayout collapsingToolbarLayout;
     CounterFab btnCart;
     ElegantNumberButton numberButton;
+
+    TextView txFullName;
 
     String componentId="";
 
@@ -44,6 +55,9 @@ public class ComponentDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_component_detail);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Menu");
+        setSupportActionBar(toolbar);
         //Firebase
         database = FirebaseDatabase.getInstance();
         components = database.getReference("Components");
@@ -80,8 +94,20 @@ public class ComponentDetail extends AppCompatActivity {
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppbar);
         collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppbar);
 
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         //Obtener el component id de el Intent
 
+        //Mostrar nombre del usuario conectado
+        View headerView = navigationView.getHeaderView(0);
+        txFullName = (TextView)headerView.findViewById(R.id.txFullName);
+        txFullName.setText(Common.currentUser.getName());
         if(getIntent() !=null){
             componentId = getIntent().getStringExtra("ComponentId");
             if(!componentId.isEmpty()){
@@ -110,6 +136,8 @@ public class ComponentDetail extends AppCompatActivity {
                 component_price.setText(currentComponent.getPrice());
                 component_name.setText(currentComponent.getName());
                 component_description.setText(currentComponent.getDescription());
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                toolbar.setTitle(currentComponent.getName());
             }
 
             @Override
@@ -117,5 +145,59 @@ public class ComponentDetail extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_products) {
+            // Handle the camera action
+            launch(UserLoggedActivity.class);
+        } else if (id == R.id.nav_favorites) {
+            startActivity(new Intent(ComponentDetail.this, FavoritesActivity.class));
+        } else if (id == R.id.nav_cart) {
+            //Intent cartIntent = new Intent(UserLoggedActivity.this, Cart.class);
+            //startActivity(cartIntent);
+            launch(Cart.class);
+        } else if (id == R.id.nav_orders) {
+            //Intent orderIntent = new Intent(UserLoggedActivity.this, OrderStatus.class);
+            //startActivity(orderIntent);
+            launch(OrderStatus.class);
+        } else if (id == R.id.nav_settings){
+            //launchSettings();
+            launch(Settings.class);
+
+        } else if (id == R.id.nav_sign_out) {
+            launchSignOut();
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private void launchSignOut() {
+        //Logout
+        Intent signIn = new Intent(ComponentDetail.this, SignIn.class);
+        signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(signIn);
+    }
+
+    public void launch(Class c){
+        Intent loggedIntent = new Intent(ComponentDetail.this, c);
+        startActivity(loggedIntent);
+        finish();
     }
 }

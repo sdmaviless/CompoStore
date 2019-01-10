@@ -106,6 +106,8 @@ public class ComponentDetailNotLogged extends AppCompatActivity implements Navig
                 component_price.setText(component.getPrice());
                 component_name.setText(component.getName());
                 component_description.setText(component.getDescription());
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                toolbar.setTitle(component.getName());
             }
 
             @Override
