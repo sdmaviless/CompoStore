@@ -74,6 +74,8 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
 
     RelativeLayout rootLayout;
 
+    //Pago con paypal
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,40 +83,12 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
         setContentView(R.layout.activity_cart);
         //setContentView(R.layout.cart_layout);
 
-        rootLayout = (RelativeLayout)findViewById(R.id.root_layout);
-
-        /*//Menu Drawer
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Menu");
-        setSupportActionBar(toolbar);*/
+        rootLayout = (RelativeLayout)findViewById(R.id.cartRoot_Layout);
 
         //Firebase
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Requests");
         category = database.getReference("Category");
-
-        //Menu drawer
-       /* mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        //Cambiar color y tamaño de titulo de menu
-
-        Menu menu = navigationView.getMenu();
-        MenuItem communicate = menu.findItem(R.id.itemCommunicate);
-        SpannableString s = new SpannableString(communicate.getTitle());
-        s.setSpan(new TextAppearanceSpan(this, R.style.itemTitle), 0, s.length(), 0);
-        communicate.setTitle(s);*/
-
-        /*//Mostrar nombre del usuario conectado
-        View headerView = navigationView.getHeaderView(0);
-        txFullName = (TextView)headerView.findViewById(R.id.txFullName);
-        txFullName.setText(Common.currentUser.getName());*/
 
         //Inicializacion del carrito
         recyclerView = (RecyclerView) findViewById(R.id.listCart);
@@ -190,13 +164,7 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            goProducts();
-
-        }
+        goProducts();
     }
 
     private void goProducts() {

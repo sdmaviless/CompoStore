@@ -54,5 +54,6 @@
     <string name="component_name">Component name</string>
     <string name="description">Description</string>
     <string name="DefaultComponentName">Name of component</string>
+    <string name="DeleteItemText">Delete</string>
 
 </resources>
