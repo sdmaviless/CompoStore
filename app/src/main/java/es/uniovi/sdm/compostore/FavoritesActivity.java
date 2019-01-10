@@ -2,6 +2,7 @@ package es.uniovi.sdm.compostore;
 
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,7 +43,7 @@ public class FavoritesActivity extends AppCompatActivity implements RecyclerItem
              R.anim.layout_from_left);
         recyclerView.setLayoutAnimation(controller);
 
-        //Swipe para eliminar producto del carrito
+        //Swipe para eliminar producto de favoritos
         ItemTouchHelper.SimpleCallback itemTouchHelperCallBack = new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(recyclerView);
 
@@ -51,6 +52,10 @@ public class FavoritesActivity extends AppCompatActivity implements RecyclerItem
 
     private void loadFavorites() {
         adapter = new FavoritesAdapter(this, new Database(this).getAllFavorites(Common.currentUser.getPhone()));
+        if(adapter.getItemCount() == 0){
+            View view = this.getWindow().getDecorView();
+            view.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.favoritosvacios));
+        }
         recyclerView.setAdapter(adapter);
     }
 
