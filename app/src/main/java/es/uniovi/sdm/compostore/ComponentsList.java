@@ -1,6 +1,8 @@
 package es.uniovi.sdm.compostore;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andremion.counterfab.CounterFab;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,11 +73,52 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
     //favourites
     Database localDB;
 
+    //Share button
+    //FaceBook share
+    CallbackManager callbackManager;
+    ShareDialog shareDialog;
+
+    //Create Target from Picasso
+    Target target = new Target(){
+
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            //Create photo from bitmap
+            SharePhoto photo = new SharePhoto.Builder()
+                    .setBitmap(bitmap)
+                    .build();
+            if(ShareDialog.canShow(SharePhotoContent.class)){
+                SharePhotoContent content = new SharePhotoContent.Builder()
+                        .addPhoto(photo)
+                        .build();
+                shareDialog.show(content);
+            }
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {
+
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Inicializar sdk de facebook
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_components_list);
+
+        //Share Button - Init facebook
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Menu");
@@ -272,9 +321,14 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
             if(localDB.isFavorite(adapter.getRef(position).getKey(), Common.currentUser.getPhone()))
                 viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
 
-            //Click to share
-            if(localDB.isFavorite(adapter.getRef(position).getKey(), Common.currentUser.getPhone()))
-                viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
+            //Share button
+            viewHolder.share_image.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    Picasso.with(getApplicationContext()).load(model.getImage()).into(target);
+                }
+            });
 
             //click to change state of favourites
             viewHolder.fav_image.setOnClickListener(new View.OnClickListener(){

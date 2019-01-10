@@ -55,5 +55,8 @@
     <string name="description">Description</string>
     <string name="DefaultComponentName">Name of component</string>
     <string name="DeleteItemText">Delete</string>
+    
+    <string name="facebook_app_id">1660848267394080</string>
+    <string name="facebook_login_protocol_name">fb1660848267394080</string>
 
 </resources>

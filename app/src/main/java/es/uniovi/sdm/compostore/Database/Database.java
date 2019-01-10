@@ -122,7 +122,7 @@ public class Database extends SQLiteAssetHelper {
     //Favoritos
     public  void addToFavorites(Favorites component){
         SQLiteDatabase db = getReadableDatabase();
-        String query = String.format("INSERT INTO FavoritesActivity (" +
+        String query = String.format("INSERT INTO Favorites (" +
                 "ComponentId, ComponentName, ComponentPrice, ComponentCategoryId, ComponentImage, ComponentDiscount, ComponentDescription, UserPhone) " +
                 "VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');",
                 component.getComponentId(),
@@ -139,7 +139,7 @@ public class Database extends SQLiteAssetHelper {
 
     public  void removeFromFavorites(String componentId, String userPhone){
         SQLiteDatabase db = getReadableDatabase();
-        String query = String.format("DELETE FROM FavoritesActivity WHERE ComponentId='%s' and UserPhone='%s';",componentId,userPhone);
+        String query = String.format("DELETE FROM Favorites WHERE ComponentId='%s' and UserPhone='%s';",componentId,userPhone);
         db.execSQL(query);
     }
 
