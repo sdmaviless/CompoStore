@@ -111,9 +111,6 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Inicializar sdk de facebook
-        FacebookSdk.sdkInitialize(getApplicationContext());
-
         setContentView(R.layout.activity_components_list);
 
         //Share Button - Init facebook
@@ -353,7 +350,7 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
                         Toast.makeText(ComponentsList.this, model.getName()+" was added to favorites",Toast.LENGTH_SHORT).show();
                     }else{
                         localDB.removeFromFavorites(adapter.getRef(position).getKey(), Common.currentUser.getPhone());
-                        viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
+                        viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                         Toast.makeText(ComponentsList.this, model.getName()+" was removed from favorites",Toast.LENGTH_SHORT).show();
                     }
                 }
