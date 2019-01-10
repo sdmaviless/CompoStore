@@ -1,6 +1,8 @@
 package es.uniovi.sdm.compostore;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -323,7 +325,12 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
 
                 @Override
                 public void onClick(View v) {
-                    Picasso.with(getApplicationContext()).load(model.getImage()).into(target);
+                    if(isFacebookInstalled(getApplicationContext())){
+                        Picasso.with(getApplicationContext()).load(model.getImage()).into(target);
+                    }else{
+                        Toast.makeText(ComponentsList.this, "Please install Facebook app to start sharing!", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             });
 
@@ -430,5 +437,15 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
         Intent loggedIntent = new Intent(ComponentsList.this, c);
         startActivity(loggedIntent);
         finish();
+    }
+
+    private boolean isFacebookInstalled(Context context){
+        PackageManager pm = context.getPackageManager();
+        try {
+            pm.getPackageInfo("com.facebook.katana", PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 }
