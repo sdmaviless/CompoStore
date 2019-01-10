@@ -328,7 +328,7 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
                     if(isFacebookInstalled(getApplicationContext())){
                         Picasso.with(getApplicationContext()).load(model.getImage()).into(target);
                     }else{
-                        Toast.makeText(ComponentsList.this, "Please install Facebook app to start sharing!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ComponentsList.this, "Please, install Facebook app to start sharing!", Toast.LENGTH_SHORT).show();
                     }
 
                 }

@@ -1,23 +1,22 @@
 package es.uniovi.sdm.compostore;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.SpannableString;
-import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,14 +29,24 @@ import android.widget.Toast;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import es.uniovi.sdm.compostore.Common.Common;
+import es.uniovi.sdm.compostore.Common.Config;
 import es.uniovi.sdm.compostore.Database.Database;
 import es.uniovi.sdm.compostore.Helper.RecyclerItemTouchHelper;
 import es.uniovi.sdm.compostore.Interface.ItemClickListener;
@@ -75,13 +84,24 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
     RelativeLayout rootLayout;
 
     //Pago con paypal
+    static PayPalConfiguration config = new PayPalConfiguration()
+            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)  //Usamos una sandbox para testeo
+            .clientId(Config.PAYPAL_CLIENT_ID);
+    String address;
+
+    private static final int  PAYPAL_REQUEST_CODE = 9999;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        //setContentView(R.layout.cart_layout);
+
+        //Init paypal
+        Intent intent = new Intent(this, PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+        startService(intent);
 
         rootLayout = (RelativeLayout)findViewById(R.id.cartRoot_Layout);
 
@@ -118,18 +138,6 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
 
         loadListComponents();
 
-//        recyclerView = (RecyclerView) findViewById(R.id.recycler_component);
-//        recyclerView.setHasFixedSize(true);
-//        layoutManager = new LinearLayoutManager(this);
-//        recyclerView.setLayoutManager(layoutManager);
-
-//        //Cargar menu
-//        recycler_menu = (RecyclerView)findViewById(R.id.recycler_menu);
-//        recycler_menu.setHasFixedSize(true);
-//        menuLayoutManager = new LinearLayoutManager(this);
-//        recycler_menu.setLayoutManager(menuLayoutManager);
-
-
         if(Common.isConnectedToInternet(this)) {
             loadMenu();
         }else{
@@ -138,7 +146,6 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
         }
     }
 
-    //
     private void loadMenu() {
         menuAdapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.menu_item, MenuViewHolder.class,category) {
             @Override
@@ -197,24 +204,25 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Creamos una nueva peticion de la base de datos
-                Request request = new Request(
-                        Common.currentUser.getPhone(),
-                        Common.currentUser.getName(),
-                        editAddress.getText().toString(),
-                        txTotalPrice.getText().toString(),
-                        cart
-                );
 
-                //La mandamos a Firebase, usaremos System.CurrentMillis como clave
-                requests.child(String.valueOf(System.currentTimeMillis()))
-                        .setValue(request);
+                //Mostrar pago con paypal
 
-                //Borrar carrito
-                new Database(getBaseContext()).cleanCart(Common.currentUser.getPhone());
-                Toast.makeText(Cart.this, "Thank you, your order was successfully completed"
-                    ,Toast.LENGTH_SHORT).show();
-                finish();
+                //Primero obtenmos la direccion del Alert Dialog
+                address = editAddress.getText().toString();
+
+                String formatAmount = txTotalPrice.getText().toString()
+                        .replace("€","")
+                        .replace(",",".")
+                        .replaceAll("\\s","");
+
+                PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(formatAmount),
+                        "EUR",
+                        "CompoStore Order",
+                        PayPalPayment.PAYMENT_INTENT_SALE);
+                Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
+                intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
+                intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
+                startActivityForResult(intent, PAYPAL_REQUEST_CODE);
             }
         });
 
@@ -228,6 +236,50 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
         alertDialog.show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == PAYPAL_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                if (confirmation != null) {
+                    try {
+                        String paymentDetail = confirmation.toJSONObject().toString(4);
+                        JSONObject jsonObject = new JSONObject(paymentDetail);
+
+                        //Creamos una nueva peticion de la base de datos
+                        Request request = new Request(
+                                Common.currentUser.getPhone(),
+                                Common.currentUser.getName(),
+                                address,
+                                txTotalPrice.getText().toString(),
+                                "0",
+                                jsonObject.getJSONObject("response").getString("state"),
+                                cart
+                        );
+
+                        //La mandamos a Firebase, usaremos System.CurrentMillis como clave
+                        requests.child(String.valueOf(System.currentTimeMillis()))
+                                .setValue(request);
+
+                        //Borrar carrito
+                        new Database(getBaseContext()).cleanCart(Common.currentUser.getPhone());
+                        Toast.makeText(Cart.this, "Thank you, your order was successfully completed"
+                                , Toast.LENGTH_SHORT).show();
+                        finish();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else if(resultCode == Activity.RESULT_CANCELED){
+                Toast.makeText(this,"Payment Cancel", Toast.LENGTH_SHORT).show();
+            }else if(resultCode == PaymentActivity.RESULT_EXTRAS_INVALID){
+                Toast.makeText(this,"Invalid payment", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     private void loadListComponents() {
         cart = new Database(this).getCarts(Common.currentUser.getPhone());
         adapter = new CartAdapter(cart,this);
@@ -235,16 +287,14 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
         recyclerView.setAdapter(adapter);
 
         //Calcular el precio total
-        int total = 0;
-        for(Order order:cart){
+        float total = 0;
+        for(Order order: cart){
             total +=(Float.parseFloat(order.getPrice()))*(Integer.parseInt(order.getQuantity()));
         }
 
         Locale locale =  new Locale("es", "ES");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
-
         txTotalPrice.setText(fmt.format(total));
-
     }
 
     @Override
@@ -324,7 +374,7 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
 
             //Actualizar el txTotal
             //Calcular el precio total
-            int total = 0;
+            float total = 0;
             List<Order> orders = new Database(getBaseContext()).getCarts(Common.currentUser.getPhone());
             for(Order item : orders){
                 total +=(Float.parseFloat(item.getPrice()))*(Integer.parseInt(item.getQuantity()));
@@ -345,7 +395,7 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
 
                     //Actualizar el txTotal
                     //Calcular el precio total
-                    int total = 0;
+                    float total = 0;
                     List<Order> orders = new Database(getBaseContext()).getCarts(Common.currentUser.getPhone());
                     for(Order item : orders){
                         total +=(Float.parseFloat(item.getPrice()))*(Integer.parseInt(item.getQuantity()));

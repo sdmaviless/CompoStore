@@ -8,26 +8,20 @@ public class Request {
     private String address;
     private String total;
     private String status;
+    private String paymentState;
     private List<Order> components; //Lista de pedido de componentes
 
     public Request() {
     }
 
-    public Request(String phone, String name, String address, String total, List<Order> components) {
+    public Request(String phone, String name, String address, String total, String status, String paymentState, List<Order> components) {
         this.phone = phone;
         this.name = name;
         this.address = address;
         this.total = total;
-        this.components = components;
-        this.status = "0"; //Por defecto sera 0, 0: Placed, 1:Shipping, 2: Shipped
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
         this.status = status;
+        this.paymentState = paymentState;
+        this.components = components;
     }
 
     public String getPhone() {
@@ -60,6 +54,22 @@ public class Request {
 
     public void setTotal(String total) {
         this.total = total;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPaymentState() {
+        return paymentState;
+    }
+
+    public void setPaymentState(String paymentState) {
+        this.paymentState = paymentState;
     }
 
     public List<Order> getComponents() {
