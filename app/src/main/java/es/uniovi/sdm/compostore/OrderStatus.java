@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import es.uniovi.sdm.compostore.Common.Common;
 import es.uniovi.sdm.compostore.Model.Request;
 import es.uniovi.sdm.compostore.ViewHolder.OrderViewHolder;
+import io.paperdb.Paper;
 
 public class OrderStatus extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -113,10 +114,13 @@ public class OrderStatus extends AppCompatActivity implements NavigationView.OnN
         return true;
     }
     private void launchSignOut() {
+        //Borrar el recordar usuario y la contraseña
+        Paper.book().destroy();
+
         //Logout
-        Intent signIn = new Intent(OrderStatus.this, SignIn.class);
-        signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(signIn);
+        Intent mainActivity = new Intent(OrderStatus.this, MainActivity.class);
+        mainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainActivity);
     }
 
     public void launch(Class c){

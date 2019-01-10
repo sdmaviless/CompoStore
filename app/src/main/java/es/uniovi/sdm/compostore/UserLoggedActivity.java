@@ -42,6 +42,7 @@ import es.uniovi.sdm.compostore.Interface.ItemClickListener;
 import es.uniovi.sdm.compostore.Model.Banner;
 import es.uniovi.sdm.compostore.Model.Category;
 import es.uniovi.sdm.compostore.ViewHolder.MenuViewHolder;
+import io.paperdb.Paper;
 
 public class UserLoggedActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -286,10 +287,13 @@ public class UserLoggedActivity extends AppCompatActivity
     }
 
     private void launchSignOut() {
+        //Borrar el recordar usuario y la contraseña
+        Paper.book().destroy();
+
         //Logout
-        Intent signIn = new Intent(UserLoggedActivity.this, SignIn.class);
-        signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(signIn);
+        Intent mainActivity = new Intent(UserLoggedActivity.this, MainActivity.class);
+        mainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainActivity);
     }
 
     public void launch(Class c){

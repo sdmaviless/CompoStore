@@ -35,7 +35,6 @@
         <activity android:name=".FavoritesActivity" />
         <activity android:name=".Cart" />
         <activity android:name=".Orders" />
-        <activity android:name=".Settings" />
         <activity android:name=".ComponentsList" />
         <activity android:name=".ComponentDetail" />
         <activity android:name=".ComponentsListNotLogged" />

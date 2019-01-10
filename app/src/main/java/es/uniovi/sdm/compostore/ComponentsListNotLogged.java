@@ -250,7 +250,7 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
         if (id == R.id.nav_products) {
             super.onBackPressed();
         } else if (id == R.id.nav_login) {
-            launchSignOut();
+            launchSignIn();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -261,8 +261,8 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
         startActivity(loggedIntent);
         finish();
     }
-    private void launchSignOut() {
-        //Logout
+    private void launchSignIn() {
+        //Log in
         Intent signIn = new Intent(ComponentsListNotLogged.this, SignIn.class);
         signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(signIn);

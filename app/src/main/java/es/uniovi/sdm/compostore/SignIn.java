@@ -114,26 +114,12 @@ public class SignIn extends AppCompatActivity {
     }
 
     public void savePreferences() { //when the user and password is correct, save them in shared preferences
-        /**
-        //edit preferences
-        final SharedPreferences.Editor mEditor = mySp.edit();
-
-        //save data in shared preferences
-        mEditor.putString("usuario", editPhone.getText().toString());
-        mEditor.putString("contraseña", editPassword.getText().toString());
-        mEditor.commit();
-         */
         Paper.book().write(Common.USER_KEY,editPhone.getText().toString());
         Paper.book().write(Common.PWD_KEY,editPassword.getText().toString());
 
     }
 
     public void loadPreferences() {
-        /**
-        //retrieve preferences
-        String phoneNumberPref = mySp.getString("usuario", "");
-        String passwordPref = mySp.getString("contraseña", "");
-*/
 
         //retrieve preferences
         String phoneNumberPref = Paper.book().read(Common.USER_KEY);
@@ -141,9 +127,5 @@ public class SignIn extends AppCompatActivity {
 
         editPhone.setText(phoneNumberPref);
         editPassword.setText(passwordPref);
-
-        //launch activity automatically
-        // TODO: if the user specifies so in the settings, don't login automatically, just write user and password
-
     }
 }

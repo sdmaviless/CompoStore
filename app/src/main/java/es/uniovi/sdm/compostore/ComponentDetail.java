@@ -30,6 +30,7 @@ import es.uniovi.sdm.compostore.Common.Common;
 import es.uniovi.sdm.compostore.Database.Database;
 import es.uniovi.sdm.compostore.Model.Component;
 import es.uniovi.sdm.compostore.Model.Order;
+import io.paperdb.Paper;
 
 public class ComponentDetail extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -172,7 +173,6 @@ public class ComponentDetail extends AppCompatActivity implements NavigationView
             launch(OrderStatus.class);
         } else if (id == R.id.nav_sign_out) {
             launchSignOut();
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -181,10 +181,13 @@ public class ComponentDetail extends AppCompatActivity implements NavigationView
     }
 
     private void launchSignOut() {
+        //Borrar el recordar usuario y la contraseña
+        Paper.book().destroy();
+
         //Logout
-        Intent signIn = new Intent(ComponentDetail.this, SignIn.class);
-        signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(signIn);
+        Intent mainActivity = new Intent(ComponentDetail.this, MainActivity.class);
+        mainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainActivity);
     }
 
     public void launch(Class c){

@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_user = database.getReference("User");
 
-        if(Common.isConnectedToInternet(getBaseContext())){
+        if (Common.isConnectedToInternet(getBaseContext())) {
 
             table_user.addValueEventListener(new ValueEventListener() {
 
@@ -156,24 +156,23 @@ public class MainActivity extends AppCompatActivity {
                         user.setPhone(pwd); //Asignar al usuario su telefono
 
 
-                                //Launch UserLoggedActivity
-                                Intent loggedIntent = new Intent(MainActivity.this, UserLoggedActivity.class);
-                                Common.currentUser = user;
-                                startActivity(loggedIntent);
-                                finish();
-                            }
+                        //Launch UserLoggedActivity
+                        Intent loggedIntent = new Intent(MainActivity.this, UserLoggedActivity.class);
+                        Common.currentUser = user;
+                        startActivity(loggedIntent);
+                        finish();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Please check your connection!!", Toast.LENGTH_SHORT).show();
+                    }
 
 
+                }
 
-
-        else{
-            Toast.makeText(MainActivity.this,"Please check your connection!!", Toast.LENGTH_SHORT).show();
-        }
-
-
-}
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(MainActivity.this,"Problem with shared preferences", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Problem with shared preferences", Toast.LENGTH_SHORT).show();
                 }
-            });}}}
+            });
+        }
+    }
+}
