@@ -56,7 +56,7 @@ public class CartAdapter extends  RecyclerView.Adapter<CartViewHolder>{
 
                 //Actualizar el txTotal
                 //Calcular el precio total
-                int total = 0;
+                float total = 0;
                 List<Order> orders = new Database(cart).getCarts(Common.currentUser.getPhone());
                 for(Order item : orders){
                     total +=(Float.parseFloat(order.getPrice()))*(Integer.parseInt(item.getQuantity()));
