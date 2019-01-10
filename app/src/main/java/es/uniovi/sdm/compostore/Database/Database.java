@@ -15,7 +15,7 @@ import es.uniovi.sdm.compostore.Model.Order;
 
 public class Database extends SQLiteAssetHelper {
     private static final String DB_NAME="CompoStoreDB-SQLite.db";
-    private static final int DB_VER =2; //Version de nuestra base de datos
+    private static final int DB_VER =1; //Version de nuestra base de datos
 
 
     public Database(Context context) {

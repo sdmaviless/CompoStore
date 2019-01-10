@@ -2,16 +2,24 @@ package es.uniovi.sdm.compostore;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.andremion.counterfab.CounterFab;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,13 +40,16 @@ import es.uniovi.sdm.compostore.Model.Favorites;
 import es.uniovi.sdm.compostore.Model.Order;
 import es.uniovi.sdm.compostore.ViewHolder.ComponentViewHolder;
 
-public class ComponentsList extends AppCompatActivity {
+public class ComponentsList extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+
+    private DrawerLayout mDrawerLayout;
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-
+    TextView txFullName;
     FirebaseDatabase database;
     DatabaseReference componentList;
+    String categoryName;
 
     String categoryId="";
 
@@ -49,6 +60,8 @@ public class ComponentsList extends AppCompatActivity {
     List<String> suggestList = new ArrayList<>();
     MaterialSearchBar materialSearchBar;
 
+    CounterFab fab;
+
     //favourites
     Database localDB;
 
@@ -58,21 +71,55 @@ public class ComponentsList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_components_list);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Menu");
+        setSupportActionBar(toolbar);
+
         //Firebase
         database = FirebaseDatabase.getInstance();
         componentList = database.getReference("Components");
 
+        //Recibimos el intent aqui
+        if(getIntent() != null){
+            categoryId = getIntent().getStringExtra("CategoryId");
+            categoryName = getIntent().getStringExtra("CategoryName");
+            toolbar.setTitle(categoryName);
+        }
+
+
         localDB = new Database(this);
+
+        fab = (CounterFab) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent cartIntent = new Intent(ComponentsList.this, Cart.class);
+                startActivity(cartIntent);
+            }
+        });
+
+        fab.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        //Mostrar nombre del usuario conectado
+        View headerView = navigationView.getHeaderView(0);
+        txFullName = (TextView)headerView.findViewById(R.id.txFullName);
+        txFullName.setText(Common.currentUser.getName());
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_component);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        //Recibimos el intent aqui
-        if(getIntent() != null){
-            categoryId = getIntent().getStringExtra("CategoryId");
-        }
+
         if(!categoryId.isEmpty() && categoryId != null){
             if(Common.isConnectedToInternet(getBaseContext())){
                 loadListComponents(categoryId);
@@ -275,5 +322,62 @@ public class ComponentsList extends AppCompatActivity {
 
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
+        if (id == R.id.nav_products) {
+            // Handle the camera action
+            super.onBackPressed();
+        } else if (id == R.id.nav_favorites) {
+            startActivity(new Intent(ComponentsList.this, FavoritesActivity.class));
+        } else if (id == R.id.nav_cart) {
+            //Intent cartIntent = new Intent(UserLoggedActivity.this, Cart.class);
+            //startActivity(cartIntent);
+            launch(Cart.class);
+        } else if (id == R.id.nav_orders) {
+            //Intent orderIntent = new Intent(UserLoggedActivity.this, OrderStatus.class);
+            //startActivity(orderIntent);
+            launch(OrderStatus.class);
+        } else if (id == R.id.nav_settings){
+            //launchSettings();
+            launch(Settings.class);
+
+        } else if (id == R.id.nav_sign_out) {
+            launchSignOut();
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fab.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
+    }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+    private void launchSignOut() {
+        //Logout
+        Intent signIn = new Intent(ComponentsList.this, SignIn.class);
+        signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(signIn);
+    }
+
+    public void launch(Class c){
+        Intent loggedIntent = new Intent(ComponentsList.this, c);
+        startActivity(loggedIntent);
+        finish();
+    }
 }

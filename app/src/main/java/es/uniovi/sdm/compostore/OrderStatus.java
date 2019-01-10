@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
@@ -27,7 +29,7 @@ public class OrderStatus extends AppCompatActivity implements NavigationView.OnN
 
     private RecyclerView recyclerView;
     public RecyclerView.LayoutManager layoutManager;
-
+    TextView txFullName;
     FirebaseRecyclerAdapter<Request,OrderViewHolder> adapter;
 
     FirebaseDatabase database;
@@ -40,7 +42,7 @@ public class OrderStatus extends AppCompatActivity implements NavigationView.OnN
 
         //Menu Drawer
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Menu");
+        toolbar.setTitle("Orders");
         setSupportActionBar(toolbar);
 
         //Firebase
@@ -56,6 +58,11 @@ public class OrderStatus extends AppCompatActivity implements NavigationView.OnN
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //Mostrar nombre del usuario conectado
+        View headerView = navigationView.getHeaderView(0);
+        txFullName = (TextView)headerView.findViewById(R.id.txFullName);
+        txFullName.setText(Common.currentUser.getName());
 
         recyclerView = (RecyclerView)findViewById(R.id.listOrders);
         recyclerView.setHasFixedSize(true);

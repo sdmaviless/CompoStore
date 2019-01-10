@@ -45,6 +45,7 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
     DatabaseReference componentListNotLogged;
 
     String categoryId="";
+    String categoryName="";
 
     FirebaseRecyclerAdapter<Component,ComponentViewHolder> adapter;
 
@@ -67,6 +68,12 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
         database = FirebaseDatabase.getInstance();
         componentListNotLogged = database.getReference("Components");
 
+        //Recibimos el intent aqui
+        if(getIntent() != null){
+            categoryId = getIntent().getStringExtra("CategoryId");
+            categoryName = getIntent().getStringExtra("CategoryName");
+            toolbar.setTitle(categoryName);
+        }
         //Menu drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -83,10 +90,7 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        //Recibimos el intent aqui
-        if(getIntent() != null){
-            categoryId = getIntent().getStringExtra("CategoryId");
-        }
+
         if(!categoryId.isEmpty() && categoryId != null){
             if(Common.isConnectedToInternet(getBaseContext())){
                 loadListComponents(categoryId);
