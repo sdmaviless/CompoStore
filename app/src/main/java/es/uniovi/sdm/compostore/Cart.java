@@ -4,19 +4,14 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,7 +71,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
 
 
     TextView txFullName;
-    FirebaseRecyclerAdapter<Category,MenuViewHolder> menuAdapter;
+    FirebaseRecyclerAdapter<Category, MenuViewHolder> menuAdapter;
     DatabaseReference category;
 
     RelativeLayout rootLayout;
@@ -87,8 +82,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
             .clientId(Config.PAYPAL_CLIENT_ID);
     String address;
 
-    private static final int  PAYPAL_REQUEST_CODE = 9999;
-
+    private static final int PAYPAL_REQUEST_CODE = 9999;
 
 
     @Override
@@ -101,7 +95,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
 
-        rootLayout = (RelativeLayout)findViewById(R.id.cartRoot_Layout);
+        rootLayout = (RelativeLayout) findViewById(R.id.cartRoot_Layout);
 
         //Firebase
         database = FirebaseDatabase.getInstance();
@@ -116,19 +110,19 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
 
 
         //Swipe para eliminar producto del carrito
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallBack = new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallBack = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(recyclerView);
 
         txTotalPrice = (TextView) findViewById(R.id.total);
-        btnPlace = (FButton)findViewById(R.id.btnPlaceOrder);
+        btnPlace = (FButton) findViewById(R.id.btnPlaceOrder);
 
         btnPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(cart.size() > 0){
+                if (cart.size() > 0) {
                     showAlertDialog();
-                }else{
+                } else {
                     Toast.makeText(Cart.this, "Your cart is empty !!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -136,16 +130,16 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
 
         loadListComponents();
 
-        if(Common.isConnectedToInternet(this)) {
+        if (Common.isConnectedToInternet(this)) {
             loadMenu();
-        }else{
+        } else {
             Toast.makeText(this, "Please check your connection !!", Toast.LENGTH_SHORT).show();
             return;
         }
     }
 
     private void loadMenu() {
-        menuAdapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.menu_item, MenuViewHolder.class,category) {
+        menuAdapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.menu_item, MenuViewHolder.class, category) {
             @Override
             protected void populateViewHolder(MenuViewHolder viewHolder, Category model, int position) {
                 viewHolder.txMenuName.setText(model.getName());
@@ -158,7 +152,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
                         //Obtener el ID de la categoria en la que se ha clickado y mandar a la nueva activity
                         Intent componentsList = new Intent(Cart.this, ComponentsList.class);
                         //El id de la categoria es una key asi que solo obtenemos la key de este item
-                        componentsList.putExtra("CategoryId",menuAdapter.getRef(position).getKey());
+                        componentsList.putExtra("CategoryId", menuAdapter.getRef(position).getKey());
                         startActivity(componentsList);
                     }
                 });
@@ -185,7 +179,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         return true;
     }
 
-    private void showAlertDialog(){
+    private void showAlertDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Cart.this);
         alertDialog.setTitle("One more step!");
         alertDialog.setMessage("Enter your address: ");
@@ -209,17 +203,17 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
                 address = editAddress.getText().toString();
 
                 String formatAmount = txTotalPrice.getText().toString()
-                        .replace("€","")
-                        .replace(",",".")
-                        .replaceAll("\\s","");
+                        .replace("€", "")
+                        .replace(",", ".")
+                        .replaceAll("\\s", "");
 
                 PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(formatAmount),
                         "EUR",
                         "CompoStore Order",
                         PayPalPayment.PAYMENT_INTENT_SALE);
                 Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
-                intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
-                intent.putExtra(PaymentActivity.EXTRA_PAYMENT,payPalPayment);
+                intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+                intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
                 startActivityForResult(intent, PAYPAL_REQUEST_CODE);
             }
         });
@@ -269,35 +263,34 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
                         e.printStackTrace();
                     }
                 }
-            }
-            else if(resultCode == Activity.RESULT_CANCELED){
-                Toast.makeText(this,"Payment Canceled", Toast.LENGTH_SHORT).show();
-            }else if(resultCode == PaymentActivity.RESULT_EXTRAS_INVALID){
-                Toast.makeText(this,"Invalid payment", Toast.LENGTH_SHORT).show();
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(this, "Payment Canceled", Toast.LENGTH_SHORT).show();
+            } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+                Toast.makeText(this, "Invalid payment", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     private void loadListComponents() {
         cart = new Database(this).getCarts(Common.currentUser.getPhone());
-        adapter = new CartAdapter(cart,this);
+        adapter = new CartAdapter(cart, this);
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
 
         //Calcular el precio total
         float total = 0;
-        for(Order order: cart){
-            total +=(Float.parseFloat(order.getPrice()))*(Integer.parseInt(order.getQuantity()));
+        for (Order order : cart) {
+            total += (Float.parseFloat(order.getPrice())) * (Integer.parseInt(order.getQuantity()));
         }
 
-        Locale locale =  new Locale("es", "ES");
+        Locale locale = new Locale("es", "ES");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
         txTotalPrice.setText(fmt.format(total));
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        if(item.getTitle().equals(Common.DELETE))
+        if (item.getTitle().equals(Common.DELETE))
             deleteCart(item.getOrder());
         return true;
     }
@@ -309,7 +302,7 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
         //Despues de eso eliminaremos los datos viejos de SQLite
         new Database(this).cleanCart(Common.currentUser.getPhone());
         //Al final actualzaremos los nuevos datos a la List<Order> de SQLite
-        for(Order item :cart){
+        for (Order item : cart) {
             new Database(this).addToCart(item);
         }
         //Refresh
@@ -318,13 +311,12 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
     }
 
 
-
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if(viewHolder instanceof CartViewHolder){
-            String name = ((CartAdapter)recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition()).getProductName();
+        if (viewHolder instanceof CartViewHolder) {
+            String name = ((CartAdapter) recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition()).getProductName();
 
-            final Order deleteItem = ((CartAdapter)recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition());
+            final Order deleteItem = ((CartAdapter) recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition());
             final int deleteIndex = viewHolder.getAdapterPosition();
 
             adapter.removeItem(deleteIndex);
@@ -334,11 +326,11 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
             //Calcular el precio total
             float total = 0;
             List<Order> orders = new Database(getBaseContext()).getCarts(Common.currentUser.getPhone());
-            for(Order item : orders){
-                total +=(Float.parseFloat(item.getPrice()))*(Integer.parseInt(item.getQuantity()));
+            for (Order item : orders) {
+                total += (Float.parseFloat(item.getPrice())) * (Integer.parseInt(item.getQuantity()));
             }
 
-            Locale locale =  new Locale("es", "ES");
+            Locale locale = new Locale("es", "ES");
             NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
             txTotalPrice.setText(fmt.format(total));
@@ -355,11 +347,11 @@ public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperLi
                     //Calcular el precio total
                     float total = 0;
                     List<Order> orders = new Database(getBaseContext()).getCarts(Common.currentUser.getPhone());
-                    for(Order item : orders){
-                        total +=(Float.parseFloat(item.getPrice()))*(Integer.parseInt(item.getQuantity()));
+                    for (Order item : orders) {
+                        total += (Float.parseFloat(item.getPrice())) * (Integer.parseInt(item.getQuantity()));
                     }
 
-                    Locale locale =  new Locale("es", "ES");
+                    Locale locale = new Locale("es", "ES");
                     NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
                     txTotalPrice.setText(fmt.format(total));

@@ -3,12 +3,8 @@ package es.uniovi.sdm.compostore;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.style.TextAppearanceSpan;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -54,10 +50,10 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
     RecyclerView recycler_menu;
     RecyclerView.LayoutManager layoutManager;
 
-    FirebaseRecyclerAdapter<Category,MenuViewHolder> adapter;
+    FirebaseRecyclerAdapter<Category, MenuViewHolder> adapter;
 
     //Slider
-    HashMap<String,String> image_list;
+    HashMap<String, String> image_list;
     SliderLayout mSlider;
 
     @Override
@@ -73,7 +69,7 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
         database = FirebaseDatabase.getInstance();
         category = database.getReference("Category");
 
-        adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.menu_item, MenuViewHolder.class,category) {
+        adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, R.layout.menu_item, MenuViewHolder.class, category) {
             @Override
             protected void populateViewHolder(MenuViewHolder viewHolder, Category model, int position) {
                 viewHolder.txMenuName.setText(model.getName());
@@ -86,7 +82,7 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
                         //Obtener el ID de la categoria en la que se ha clickado y mandar a la nueva activity
                         Intent componentsList = new Intent(UserNotLoggedActivity.this, ComponentsListNotLogged.class);
                         //El id de la categoria es una key asi que solo obtenemos la key de este item
-                        componentsList.putExtra("CategoryId",adapter.getRef(position).getKey());
+                        componentsList.putExtra("CategoryId", adapter.getRef(position).getKey());
                         componentsList.putExtra("CategoryName", adapter.getItem(position).getName());
                         startActivity(componentsList);
                     }
@@ -104,16 +100,16 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
         navigationView.setNavigationItemSelectedListener(this);
 
         //Cargar Menu
-        recycler_menu = (RecyclerView)findViewById(R.id.recycler_menu);
+        recycler_menu = (RecyclerView) findViewById(R.id.recycler_menu);
         layoutManager = new LinearLayoutManager(this);
         recycler_menu.setLayoutManager(layoutManager);
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(recycler_menu.getContext(),
                 R.anim.layout_fall_down);
         recycler_menu.setLayoutAnimation(controller);
 
-        if(Common.isConnectedToInternet(this)) {
+        if (Common.isConnectedToInternet(this)) {
             loadMenu();
-        }else{
+        } else {
             Toast.makeText(this, "Please check your connection !!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -124,7 +120,7 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
     }
 
     private void setUpSlider() {
-        mSlider = (SliderLayout)findViewById(R.id.slider);
+        mSlider = (SliderLayout) findViewById(R.id.slider);
         image_list = new HashMap<>();
 
         final DatabaseReference banners = database.getReference("Banner");
@@ -133,13 +129,13 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for(DataSnapshot postSnapShot:dataSnapshot.getChildren()){
+                for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
                     Banner banner = postSnapShot.getValue(Banner.class);
                     //Vamos a concatenar el nombre string y id de la siguiente forma
                     // HARD_DRIVE_1 => Y usaremos HARD DRIVE para enseñar la descripcion, 1 para hacer click en el id del componente
-                    image_list.put(banner.getName()+"_"+banner.getId(), banner.getImage());
+                    image_list.put(banner.getName() + "_" + banner.getId(), banner.getImage());
                 }
-                for(String key:image_list.keySet()){
+                for (String key : image_list.keySet()) {
                     String[] keySplit = key.split("_");
                     String nameOfComponent = keySplit[0];
                     String idOfComponent = keySplit[1];
@@ -153,7 +149,7 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
                             .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                                 @Override
                                 public void onSliderClick(BaseSliderView slider) {
-                                    Intent intent = new Intent (UserNotLoggedActivity.this, ComponentDetailNotLogged.class);
+                                    Intent intent = new Intent(UserNotLoggedActivity.this, ComponentDetailNotLogged.class);
                                     //Mandamos el id del componente a ComponentDetail
                                     intent.putExtras(textSliderView.getBundle());
                                     startActivity(intent);
@@ -221,7 +217,7 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if(id == R.id.refresh){
+        if (id == R.id.refresh) {
             loadMenu();
         }
 
@@ -250,6 +246,7 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
         signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(signIn);
     }
+
     private void launchMain() {
         Intent mainActivity = new Intent(UserNotLoggedActivity.this, MainActivity.class);
         mainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

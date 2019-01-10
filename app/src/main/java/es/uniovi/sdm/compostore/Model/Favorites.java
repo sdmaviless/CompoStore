@@ -6,7 +6,7 @@ public class Favorites {
             ComponentCategoryId, ComponentImage, ComponentDiscount, ComponentDescription, UserPhone;
 
 
-    public Favorites(){
+    public Favorites() {
 
     }
 

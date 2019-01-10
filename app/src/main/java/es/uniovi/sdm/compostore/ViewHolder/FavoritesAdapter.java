@@ -14,10 +14,8 @@ import java.util.List;
 
 import es.uniovi.sdm.compostore.Common.Common;
 import es.uniovi.sdm.compostore.ComponentDetail;
-import es.uniovi.sdm.compostore.ComponentsList;
 import es.uniovi.sdm.compostore.Database.Database;
 import es.uniovi.sdm.compostore.Interface.ItemClickListener;
-import es.uniovi.sdm.compostore.Model.Component;
 import es.uniovi.sdm.compostore.Model.Favorites;
 import es.uniovi.sdm.compostore.Model.Order;
 import es.uniovi.sdm.compostore.R;
@@ -35,7 +33,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
     @Override
     public FavoritesViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(context)
-                .inflate(R.layout.favorites_item,viewGroup,false);
+                .inflate(R.layout.favorites_item, viewGroup, false);
         return new FavoritesViewHolder(itemView);
     }
 
@@ -76,7 +74,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
             public void onClick(View view, int position, boolean isLongClick) {
                 //Iniciar una nueva activity
                 Intent componentDetail = new Intent(context, ComponentDetail.class);
-                componentDetail.putExtra("ComponentId",  favoritesList.get(position).getComponentId()); //Mandarle el Component Id a la nueva activity
+                componentDetail.putExtra("ComponentId", favoritesList.get(position).getComponentId()); //Mandarle el Component Id a la nueva activity
                 context.startActivity(componentDetail);
             }
         });
@@ -89,17 +87,17 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesViewHolder> 
         return favoritesList.size();
     }
 
-    public void removeItem (int position){
+    public void removeItem(int position) {
         favoritesList.remove(position);
         notifyItemRemoved(position);
     }
 
-    public void restoreItem (Favorites item, int position){
-        favoritesList.add(position,item);
+    public void restoreItem(Favorites item, int position) {
+        favoritesList.add(position, item);
         notifyItemInserted(position);
     }
 
-    public Favorites getItem(int position){
+    public Favorites getItem(int position) {
         return favoritesList.get(position);
     }
 

@@ -24,14 +24,14 @@ import es.uniovi.sdm.compostore.Model.Request;
 import es.uniovi.sdm.compostore.ViewHolder.OrderViewHolder;
 import io.paperdb.Paper;
 
-public class OrderStatus extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class OrderStatus extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout mDrawerLayout;
 
     private RecyclerView recyclerView;
     public RecyclerView.LayoutManager layoutManager;
     TextView txFullName;
-    FirebaseRecyclerAdapter<Request,OrderViewHolder> adapter;
+    FirebaseRecyclerAdapter<Request, OrderViewHolder> adapter;
 
     FirebaseDatabase database;
     DatabaseReference requests;
@@ -62,10 +62,10 @@ public class OrderStatus extends AppCompatActivity implements NavigationView.OnN
 
         //Mostrar nombre del usuario conectado
         View headerView = navigationView.getHeaderView(0);
-        txFullName = (TextView)headerView.findViewById(R.id.txFullName);
+        txFullName = (TextView) headerView.findViewById(R.id.txFullName);
         txFullName.setText(Common.currentUser.getName());
 
-        recyclerView = (RecyclerView)findViewById(R.id.listOrders);
+        recyclerView = (RecyclerView) findViewById(R.id.listOrders);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -113,6 +113,7 @@ public class OrderStatus extends AppCompatActivity implements NavigationView.OnN
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     private void launchSignOut() {
         //Borrar el recordar usuario y la contraseña
         Paper.book().destroy();
@@ -123,18 +124,19 @@ public class OrderStatus extends AppCompatActivity implements NavigationView.OnN
         startActivity(mainActivity);
     }
 
-    public void launch(Class c){
+    public void launch(Class c) {
         Intent loggedIntent = new Intent(OrderStatus.this, c);
         startActivity(loggedIntent);
         finish();
     }
+
     private void loadOrders(String phone) {
         adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolder>(
                 Request.class,
                 R.layout.order_layout,
                 OrderViewHolder.class,
                 requests.orderByChild("phone")
-                .equalTo(phone)
+                        .equalTo(phone)
 
         ) {
             @Override
@@ -149,13 +151,13 @@ public class OrderStatus extends AppCompatActivity implements NavigationView.OnN
         recyclerView.setAdapter(adapter);
     }
 
-    private String convertCodeToStatus(String status){
+    private String convertCodeToStatus(String status) {
 
-        if(status.equals("0")){
+        if (status.equals("0")) {
             return "Placed";
-        }else if (status.equals("1")){
+        } else if (status.equals("1")) {
             return "On my way";
-        }else{
+        } else {
             return "Shipped";
         }
     }

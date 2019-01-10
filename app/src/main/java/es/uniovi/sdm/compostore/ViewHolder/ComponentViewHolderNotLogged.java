@@ -12,7 +12,7 @@ public class ComponentViewHolderNotLogged
         extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView component_name;
-    public ImageView component_image,fav_image;
+    public ImageView component_image, fav_image;
 
     private ItemClickListener itemClickListener;
 
@@ -24,14 +24,14 @@ public class ComponentViewHolderNotLogged
         super(itemView);
 
         component_name = (TextView) itemView.findViewById(R.id.component_name);
-        component_image =(ImageView) itemView.findViewById(R.id.component_image);
-        fav_image =(ImageView) itemView.findViewById(R.id.fav);
+        component_image = (ImageView) itemView.findViewById(R.id.component_image);
+        fav_image = (ImageView) itemView.findViewById(R.id.fav);
 
         itemView.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        itemClickListener.onClick(view,getAdapterPosition(),false);
+        itemClickListener.onClick(view, getAdapterPosition(), false);
     }
 }

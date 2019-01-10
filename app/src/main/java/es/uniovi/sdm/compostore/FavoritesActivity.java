@@ -40,11 +40,11 @@ public class FavoritesActivity extends AppCompatActivity implements RecyclerItem
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(recyclerView.getContext(),
-             R.anim.layout_from_left);
+                R.anim.layout_from_left);
         recyclerView.setLayoutAnimation(controller);
 
         //Swipe para eliminar producto de favoritos
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallBack = new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallBack = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(recyclerView);
 
         loadFavorites();
@@ -52,7 +52,7 @@ public class FavoritesActivity extends AppCompatActivity implements RecyclerItem
 
     private void loadFavorites() {
         adapter = new FavoritesAdapter(this, new Database(this).getAllFavorites(Common.currentUser.getPhone()));
-        if(adapter.getItemCount() == 0){
+        if (adapter.getItemCount() == 0) {
             View view = this.getWindow().getDecorView();
             view.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.favoritosvacios));
         }
@@ -61,10 +61,10 @@ public class FavoritesActivity extends AppCompatActivity implements RecyclerItem
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if(viewHolder instanceof FavoritesViewHolder){
-            String name = ((FavoritesAdapter)recyclerView.getAdapter()).getItem(position).getComponentName();
+        if (viewHolder instanceof FavoritesViewHolder) {
+            String name = ((FavoritesAdapter) recyclerView.getAdapter()).getItem(position).getComponentName();
 
-            final Favorites deleteItem = ((FavoritesAdapter)recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition());
+            final Favorites deleteItem = ((FavoritesAdapter) recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition());
             final int deleteIndex = viewHolder.getAdapterPosition();
 
             adapter.removeItem(viewHolder.getAdapterPosition());

@@ -3,7 +3,6 @@ package es.uniovi.sdm.compostore;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -32,7 +31,7 @@ import es.uniovi.sdm.compostore.Model.Component;
 import es.uniovi.sdm.compostore.Model.Order;
 import io.paperdb.Paper;
 
-public class ComponentDetail extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ComponentDetail extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout mDrawerLayout;
 
@@ -44,7 +43,7 @@ public class ComponentDetail extends AppCompatActivity implements NavigationView
 
     TextView txFullName;
 
-    String componentId="";
+    String componentId = "";
 
     FirebaseDatabase database;
     DatabaseReference components;
@@ -91,7 +90,7 @@ public class ComponentDetail extends AppCompatActivity implements NavigationView
         component_price = (TextView) findViewById(R.id.component_price);
         component_image = (ImageView) findViewById(R.id.img_component);
 
-        collapsingToolbarLayout =(CollapsingToolbarLayout) findViewById(R.id.collapsing);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppbar);
         collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppbar);
 
@@ -107,14 +106,14 @@ public class ComponentDetail extends AppCompatActivity implements NavigationView
 
         //Mostrar nombre del usuario conectado
         View headerView = navigationView.getHeaderView(0);
-        txFullName = (TextView)headerView.findViewById(R.id.txFullName);
+        txFullName = (TextView) headerView.findViewById(R.id.txFullName);
         txFullName.setText(Common.currentUser.getName());
-        if(getIntent() !=null){
+        if (getIntent() != null) {
             componentId = getIntent().getStringExtra("ComponentId");
-            if(!componentId.isEmpty()){
-                if(Common.isConnectedToInternet(getBaseContext())){
+            if (!componentId.isEmpty()) {
+                if (Common.isConnectedToInternet(getBaseContext())) {
                     getDetailComponent(componentId);
-                }else{
+                } else {
                     Toast.makeText(ComponentDetail.this, "Please check your connection!!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -147,6 +146,7 @@ public class ComponentDetail extends AppCompatActivity implements NavigationView
             }
         });
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -156,6 +156,7 @@ public class ComponentDetail extends AppCompatActivity implements NavigationView
             super.onBackPressed();
         }
     }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -190,7 +191,7 @@ public class ComponentDetail extends AppCompatActivity implements NavigationView
         startActivity(mainActivity);
     }
 
-    public void launch(Class c){
+    public void launch(Class c) {
         Intent loggedIntent = new Intent(ComponentDetail.this, c);
         startActivity(loggedIntent);
         finish();

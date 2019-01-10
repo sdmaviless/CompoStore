@@ -44,13 +44,13 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
     FirebaseDatabase database;
     DatabaseReference componentListNotLogged;
 
-    String categoryId="";
-    String categoryName="";
+    String categoryId = "";
+    String categoryName = "";
 
-    FirebaseRecyclerAdapter<Component,ComponentViewHolder> adapter;
+    FirebaseRecyclerAdapter<Component, ComponentViewHolder> adapter;
 
     //Barra de busqueda
-    FirebaseRecyclerAdapter<Component,ComponentViewHolder> searchAdapter;
+    FirebaseRecyclerAdapter<Component, ComponentViewHolder> searchAdapter;
     List<String> suggestList = new ArrayList<>();
     MaterialSearchBar materialSearchBar;
 
@@ -69,7 +69,7 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
         componentListNotLogged = database.getReference("Components");
 
         //Recibimos el intent aqui
-        if(getIntent() != null){
+        if (getIntent() != null) {
             categoryId = getIntent().getStringExtra("CategoryId");
             categoryName = getIntent().getStringExtra("CategoryName");
             toolbar.setTitle(categoryName);
@@ -91,17 +91,17 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
         recyclerView.setLayoutManager(layoutManager);
 
 
-        if(!categoryId.isEmpty() && categoryId != null){
-            if(Common.isConnectedToInternet(getBaseContext())){
+        if (!categoryId.isEmpty() && categoryId != null) {
+            if (Common.isConnectedToInternet(getBaseContext())) {
                 loadListComponents(categoryId);
-            }else{
+            } else {
                 Toast.makeText(ComponentsListNotLogged.this, "Please check your connection!!", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
 
         //Barra de busqueda
-        materialSearchBar = (MaterialSearchBar)findViewById(R.id.searchBar);
+        materialSearchBar = (MaterialSearchBar) findViewById(R.id.searchBar);
         materialSearchBar.setHint("Enter component name");
         loadSuggest();
         materialSearchBar.setLastSuggestions(suggestList);
@@ -117,8 +117,8 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
                 //Cuando escribimos el texto, sugerimos la lista
 
                 List<String> suggest = new ArrayList<String>();
-                for(String search:suggestList){
-                    if(search.toLowerCase().contains(materialSearchBar.getText().toLowerCase())){
+                for (String search : suggestList) {
+                    if (search.toLowerCase().contains(materialSearchBar.getText().toLowerCase())) {
                         suggest.add(search);
                     }
                 }
@@ -135,7 +135,7 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
             public void onSearchStateChanged(boolean enabled) {
                 //Cuando la barra de busqueda esta cerrada
                 //Restaura el adapter original
-                if(!enabled){
+                if (!enabled) {
                     recyclerView.setAdapter(adapter);
                 }
             }
@@ -188,7 +188,7 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot postSnapshot:dataSnapshot.getChildren()){
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                             Component item = postSnapshot.getValue(Component.class);
                             suggestList.add(item.getName()); //Añade un nombre de componente a la lista
                         }
@@ -241,6 +241,7 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
             super.onBackPressed();
         }
     }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -256,11 +257,13 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    public void launch(Class c){
+
+    public void launch(Class c) {
         Intent loggedIntent = new Intent(ComponentsListNotLogged.this, c);
         startActivity(loggedIntent);
         finish();
     }
+
     private void launchSignIn() {
         //Log in
         Intent signIn = new Intent(ComponentsListNotLogged.this, SignIn.class);

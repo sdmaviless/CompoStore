@@ -19,12 +19,12 @@ import es.uniovi.sdm.compostore.Database.Database;
 import es.uniovi.sdm.compostore.Model.Order;
 import es.uniovi.sdm.compostore.R;
 
-public class CartAdapter extends  RecyclerView.Adapter<CartViewHolder>{
+public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
 
     private List<Order> listData = new ArrayList<>();
     private Cart cart;
 
-    public CartAdapter(List<Order> listData,  Cart cart) {
+    public CartAdapter(List<Order> listData, Cart cart) {
         this.listData = listData;
         this.cart = cart;
     }
@@ -32,7 +32,7 @@ public class CartAdapter extends  RecyclerView.Adapter<CartViewHolder>{
     @Override
     public CartViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(cart);
-        View itemView = inflater.inflate(R.layout.cart_layout,viewGroup,false);
+        View itemView = inflater.inflate(R.layout.cart_layout, viewGroup, false);
         return new CartViewHolder(itemView);
 
     }
@@ -42,7 +42,7 @@ public class CartAdapter extends  RecyclerView.Adapter<CartViewHolder>{
 
         Picasso.with(cart.getBaseContext())
                 .load(listData.get(position).getImage())
-                .resize(70,70)
+                .resize(70, 70)
                 .centerCrop()
                 .into(cartViewHolder.cart_image);
 
@@ -58,18 +58,18 @@ public class CartAdapter extends  RecyclerView.Adapter<CartViewHolder>{
                 //Calcular el precio total
                 float total = 0;
                 List<Order> orders = new Database(cart).getCarts(Common.currentUser.getPhone());
-                for(Order item : orders){
-                    total +=(Float.parseFloat(order.getPrice()))*(Integer.parseInt(item.getQuantity()));
+                for (Order item : orders) {
+                    total += (Float.parseFloat(order.getPrice())) * (Integer.parseInt(item.getQuantity()));
                 }
 
-                Locale locale =  new Locale("es", "ES");
+                Locale locale = new Locale("es", "ES");
                 NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
                 cart.txTotalPrice.setText(fmt.format(total));
             }
         });
 
-        Locale locale =  new Locale("es", "ES");
+        Locale locale = new Locale("es", "ES");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
         //Calculando el precio total del carrito
@@ -84,17 +84,17 @@ public class CartAdapter extends  RecyclerView.Adapter<CartViewHolder>{
         return listData.size();
     }
 
-    public Order getItem(int position){
-        return  listData.get(position);
+    public Order getItem(int position) {
+        return listData.get(position);
     }
 
-    public void removeItem (int position){
+    public void removeItem(int position) {
         listData.remove(position);
         notifyItemRemoved(position);
     }
 
-    public void restoreItem (Order item, int position){
-        listData.add(position,item);
+    public void restoreItem(Order item, int position) {
+        listData.add(position, item);
         notifyItemInserted(position);
     }
 }

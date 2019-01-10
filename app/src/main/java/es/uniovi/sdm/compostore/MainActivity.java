@@ -49,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
         //printKeyHash();
 
-        btnSignIn = (Button)findViewById(R.id.btnSignIn);
-        btnSignUp = (Button)findViewById(R.id.btnSignUp);
-        btnContinueUnlogged= (Button)findViewById((R.id.btnContinueUnlogged));
+        btnSignIn = (Button) findViewById(R.id.btnSignIn);
+        btnSignUp = (Button) findViewById(R.id.btnSignUp);
+        btnContinueUnlogged = (Button) findViewById((R.id.btnContinueUnlogged));
 
-        txtSlogan = (TextView)findViewById(R.id.txtSlogan);
+        txtSlogan = (TextView) findViewById(R.id.txtSlogan);
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/Madeleina Sans.otf");
         txtSlogan.setTypeface(face);
 
@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
                 if (Common.isConnectedToInternet(getBaseContext())) {
                     Intent signIn = new Intent(MainActivity.this, SignIn.class);
                     startActivity(signIn);
-                }else{
-                    Toast.makeText(MainActivity.this,"Please check your connection!!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Please check your connection!!", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
@@ -77,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (Common.isConnectedToInternet(getBaseContext())) {
-                Intent signUp = new Intent(MainActivity.this, SignUp.class);
-                startActivity(signUp);
-                }else{
-                    Toast.makeText(MainActivity.this,"Please check your connection!!", Toast.LENGTH_SHORT).show();
+                    Intent signUp = new Intent(MainActivity.this, SignUp.class);
+                    startActivity(signUp);
+                } else {
+                    Toast.makeText(MainActivity.this, "Please check your connection!!", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
@@ -90,10 +90,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (Common.isConnectedToInternet(getBaseContext())) {
-                Intent notLogged = new Intent(MainActivity.this, UserNotLoggedActivity.class);
-                startActivity(notLogged);
-                }else{
-                    Toast.makeText(MainActivity.this,"Please check your connection!!", Toast.LENGTH_SHORT).show();
+                    Intent notLogged = new Intent(MainActivity.this, UserNotLoggedActivity.class);
+                    startActivity(notLogged);
+                } else {
+                    Toast.makeText(MainActivity.this, "Please check your connection!!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -104,23 +104,23 @@ public class MainActivity extends AppCompatActivity {
         //Check shared preferences
         String user = Paper.book().read(Common.USER_KEY);
         String pwd = Paper.book().read(Common.PWD_KEY);
-        if(user != null && pwd != null){
-            if(!user.isEmpty() && !pwd.isEmpty()){
-                login(user,pwd);
+        if (user != null && pwd != null) {
+            if (!user.isEmpty() && !pwd.isEmpty()) {
+                login(user, pwd);
             }
         }
     }
 
     //Share button
-    private void printKeyHash(){
-        try{
-            PackageInfo info = getPackageManager().getPackageInfo("es.uniovi.sdm.compostore",PackageManager.GET_SIGNATURES);
+    private void printKeyHash() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo("es.uniovi.sdm.compostore", PackageManager.GET_SIGNATURES);
 
-            for(Signature signature : info.signatures){
+            for (Signature signature : info.signatures) {
 
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
-                Log.d("KeyHash", Base64.encodeToString(md.digest(),Base64.DEFAULT));
+                Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT));
 
             }
 

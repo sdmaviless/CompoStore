@@ -17,7 +17,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -25,7 +24,6 @@ import android.widget.Toast;
 
 import com.andremion.counterfab.CounterFab;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
@@ -51,7 +49,7 @@ import es.uniovi.sdm.compostore.Model.Order;
 import es.uniovi.sdm.compostore.ViewHolder.ComponentViewHolder;
 import io.paperdb.Paper;
 
-public class ComponentsList extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ComponentsList extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout mDrawerLayout;
 
@@ -62,12 +60,12 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
     DatabaseReference componentList;
     String categoryName;
 
-    String categoryId="";
+    String categoryId = "";
 
-    FirebaseRecyclerAdapter<Component,ComponentViewHolder> adapter;
+    FirebaseRecyclerAdapter<Component, ComponentViewHolder> adapter;
 
     //Barra de busqueda
-    FirebaseRecyclerAdapter<Component,ComponentViewHolder> searchAdapter;
+    FirebaseRecyclerAdapter<Component, ComponentViewHolder> searchAdapter;
     List<String> suggestList = new ArrayList<>();
     MaterialSearchBar materialSearchBar;
 
@@ -82,7 +80,7 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
     ShareDialog shareDialog;
 
     //Create Target from Picasso
-    Target target = new Target(){
+    Target target = new Target() {
 
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -90,7 +88,7 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
             SharePhoto photo = new SharePhoto.Builder()
                     .setBitmap(bitmap)
                     .build();
-            if(ShareDialog.canShow(SharePhotoContent.class)){
+            if (ShareDialog.canShow(SharePhotoContent.class)) {
                 SharePhotoContent content = new SharePhotoContent.Builder()
                         .addPhoto(photo)
                         .build();
@@ -129,7 +127,7 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
         componentList = database.getReference("Components");
 
         //Recibimos el intent aqui
-        if(getIntent() != null){
+        if (getIntent() != null) {
             categoryId = getIntent().getStringExtra("CategoryId");
             categoryName = getIntent().getStringExtra("CategoryName");
             toolbar.setTitle(categoryName);
@@ -160,7 +158,7 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
 
         //Mostrar nombre del usuario conectado
         View headerView = navigationView.getHeaderView(0);
-        txFullName = (TextView)headerView.findViewById(R.id.txFullName);
+        txFullName = (TextView) headerView.findViewById(R.id.txFullName);
         txFullName.setText(Common.currentUser.getName());
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_component);
@@ -169,10 +167,10 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
         recyclerView.setLayoutManager(layoutManager);
 
 
-        if(!categoryId.isEmpty() && categoryId != null){
-            if(Common.isConnectedToInternet(getBaseContext())){
+        if (!categoryId.isEmpty() && categoryId != null) {
+            if (Common.isConnectedToInternet(getBaseContext())) {
                 loadListComponents(categoryId);
-            }else{
+            } else {
                 Toast.makeText(ComponentsList.this, "Please check your connection!!", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -180,7 +178,7 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
         }
 
         //Barra de busqueda
-        materialSearchBar = (MaterialSearchBar)findViewById(R.id.searchBar);
+        materialSearchBar = (MaterialSearchBar) findViewById(R.id.searchBar);
         materialSearchBar.setHint("Enter component name");
         loadSuggest();
         materialSearchBar.setLastSuggestions(suggestList);
@@ -196,8 +194,8 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
                 //Cuando escribimos el texto, sugerimos la lista
 
                 List<String> suggest = new ArrayList<String>();
-                for(String search:suggestList){
-                    if(search.toLowerCase().contains(materialSearchBar.getText().toLowerCase())){
+                for (String search : suggestList) {
+                    if (search.toLowerCase().contains(materialSearchBar.getText().toLowerCase())) {
                         suggest.add(search);
                     }
                 }
@@ -214,7 +212,7 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
             public void onSearchStateChanged(boolean enabled) {
                 //Cuando la barra de busqueda esta cerrada
                 //Restaura el adapter original
-                if(!enabled){
+                if (!enabled) {
                     recyclerView.setAdapter(adapter);
                 }
             }
@@ -267,7 +265,7 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot postSnapshot:dataSnapshot.getChildren()){
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                             Component item = postSnapshot.getValue(Component.class);
                             suggestList.add(item.getName()); //Añade un nombre de componente a la lista
                         }
@@ -288,13 +286,13 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
                 ComponentViewHolder.class,
                 //Mismo que: Select * from Components where CategoryId = ..
                 componentList.orderByChild("CategoryId").equalTo(categoryId)) {
-        @Override
-        protected void populateViewHolder(final ComponentViewHolder viewHolder, final Component model, final int position) {
-            viewHolder.component_name.setText(model.getName());
-            viewHolder.component_price.setText(String.format("€ %s", model.getPrice().toString()));
-            Picasso.with(getBaseContext()).load(model.getImage()).into(viewHolder.component_image);
+            @Override
+            protected void populateViewHolder(final ComponentViewHolder viewHolder, final Component model, final int position) {
+                viewHolder.component_name.setText(model.getName());
+                viewHolder.component_price.setText(String.format("€ %s", model.getPrice().toString()));
+                Picasso.with(getBaseContext()).load(model.getImage()).into(viewHolder.component_image);
 
-            //Quick cart
+                //Quick cart
 
                 viewHolder.quick_cart.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -317,65 +315,65 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
                     }
                 });
 
-            //add favourites
-            if(localDB.isFavorite(adapter.getRef(position).getKey(), Common.currentUser.getPhone()))
-                viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
+                //add favourites
+                if (localDB.isFavorite(adapter.getRef(position).getKey(), Common.currentUser.getPhone()))
+                    viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
 
-            //Share button
-            viewHolder.share_image.setOnClickListener(new View.OnClickListener(){
+                //Share button
+                viewHolder.share_image.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    if(isFacebookInstalled(getApplicationContext())){
-                        Picasso.with(getApplicationContext()).load(model.getImage()).into(target);
-                    }else{
-                        Toast.makeText(ComponentsList.this, "Please, install Facebook app to start sharing!", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onClick(View v) {
+                        if (isFacebookInstalled(getApplicationContext())) {
+                            Picasso.with(getApplicationContext()).load(model.getImage()).into(target);
+                        } else {
+                            Toast.makeText(ComponentsList.this, "Please, install Facebook app to start sharing!", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
+                });
 
-                }
-            });
+                //click to change state of favourites
+                viewHolder.fav_image.setOnClickListener(new View.OnClickListener() {
 
-            //click to change state of favourites
-            viewHolder.fav_image.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
 
-                @Override
-                public void onClick(View v) {
-
-                    Favorites favorites = new Favorites();
-                    favorites.setComponentId(adapter.getRef(position).getKey());
-                    favorites.setComponentName(model.getName());
-                    favorites.setComponentDescription(model.getDescription());
-                    favorites.setComponentDiscount(model.getDiscount());
-                    favorites.setComponentImage(model.getImage());
-                    favorites.setComponentCategoryId(model.getCategoryId());
-                    favorites.setUserPhone(Common.currentUser.getPhone());
-                    favorites.setComponentPrice(model.getPrice());
+                        Favorites favorites = new Favorites();
+                        favorites.setComponentId(adapter.getRef(position).getKey());
+                        favorites.setComponentName(model.getName());
+                        favorites.setComponentDescription(model.getDescription());
+                        favorites.setComponentDiscount(model.getDiscount());
+                        favorites.setComponentImage(model.getImage());
+                        favorites.setComponentCategoryId(model.getCategoryId());
+                        favorites.setUserPhone(Common.currentUser.getPhone());
+                        favorites.setComponentPrice(model.getPrice());
 
 
-                    if(!localDB.isFavorite(adapter.getRef(position).getKey(), Common.currentUser.getPhone())){
-                        localDB.addToFavorites(favorites);
-                        viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
-                        Toast.makeText(ComponentsList.this, model.getName()+" was added to favorites",Toast.LENGTH_SHORT).show();
-                    }else{
-                        localDB.removeFromFavorites(adapter.getRef(position).getKey(), Common.currentUser.getPhone());
-                        viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                        Toast.makeText(ComponentsList.this, model.getName()+" was removed from favorites",Toast.LENGTH_SHORT).show();
+                        if (!localDB.isFavorite(adapter.getRef(position).getKey(), Common.currentUser.getPhone())) {
+                            localDB.addToFavorites(favorites);
+                            viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
+                            Toast.makeText(ComponentsList.this, model.getName() + " was added to favorites", Toast.LENGTH_SHORT).show();
+                        } else {
+                            localDB.removeFromFavorites(adapter.getRef(position).getKey(), Common.currentUser.getPhone());
+                            viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                            Toast.makeText(ComponentsList.this, model.getName() + " was removed from favorites", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-            });
+                });
 
-            final Component local = model;
-            viewHolder.setItemClickListener(new ItemClickListener() {
-                @Override
-                public void onClick(View view, int position, boolean isLongClick) {
-                   //Iniciar una nueva activity
-                    Intent componentDetail = new Intent(ComponentsList.this, ComponentDetail.class);
-                    componentDetail.putExtra("ComponentId", adapter.getRef(position).getKey()); //Mandarle el Component Id a la nueva activity
-                    startActivity(componentDetail);
-                }
-            });
-        }
-    };
+                final Component local = model;
+                viewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position, boolean isLongClick) {
+                        //Iniciar una nueva activity
+                        Intent componentDetail = new Intent(ComponentsList.this, ComponentDetail.class);
+                        componentDetail.putExtra("ComponentId", adapter.getRef(position).getKey()); //Mandarle el Component Id a la nueva activity
+                        startActivity(componentDetail);
+                    }
+                });
+            }
+        };
 
         recyclerView.setAdapter(adapter);
 
@@ -405,11 +403,13 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         fab.setCount(new Database(this).getCountCart(Common.currentUser.getPhone()));
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -419,6 +419,7 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
             super.onBackPressed();
         }
     }
+
     private void launchSignOut() {
         //Borrar el recordar usuario y la contraseña
         Paper.book().destroy();
@@ -429,13 +430,13 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
         startActivity(mainActivity);
     }
 
-    public void launch(Class c){
+    public void launch(Class c) {
         Intent loggedIntent = new Intent(ComponentsList.this, c);
         startActivity(loggedIntent);
         finish();
     }
 
-    private boolean isFacebookInstalled(Context context){
+    private boolean isFacebookInstalled(Context context) {
         PackageManager pm = context.getPackageManager();
         try {
             pm.getPackageInfo("com.facebook.katana", PackageManager.GET_ACTIVITIES);

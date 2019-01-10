@@ -3,7 +3,6 @@ package es.uniovi.sdm.compostore;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +33,7 @@ public class ComponentDetailNotLogged extends AppCompatActivity implements Navig
     ImageView component_image;
     CollapsingToolbarLayout collapsingToolbarLayout;
 
-    String componentId="";
+    String componentId = "";
 
     FirebaseDatabase database;
     DatabaseReference components;
@@ -72,18 +70,18 @@ public class ComponentDetailNotLogged extends AppCompatActivity implements Navig
         component_price = (TextView) findViewById(R.id.component_price);
         component_image = (ImageView) findViewById(R.id.img_component);
 
-        collapsingToolbarLayout =(CollapsingToolbarLayout) findViewById(R.id.collapsing);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing);
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppbar);
         collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppbar);
 
         //Obtener el component id de el Intent
 
-        if(getIntent() !=null){
+        if (getIntent() != null) {
             componentId = getIntent().getStringExtra("ComponentId");
-            if(!componentId.isEmpty()){
-                if(Common.isConnectedToInternet(getBaseContext())){
+            if (!componentId.isEmpty()) {
+                if (Common.isConnectedToInternet(getBaseContext())) {
                     getDetailComponent(componentId);
-                }else{
+                } else {
                     Toast.makeText(ComponentDetailNotLogged.this, "Please check your connection!!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -116,6 +114,7 @@ public class ComponentDetailNotLogged extends AppCompatActivity implements Navig
             }
         });
     }
+
     //Menu drawer
     @Override
     public void onBackPressed() {
@@ -126,6 +125,7 @@ public class ComponentDetailNotLogged extends AppCompatActivity implements Navig
             super.onBackPressed();
         }
     }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -134,20 +134,22 @@ public class ComponentDetailNotLogged extends AppCompatActivity implements Navig
 
         if (id == R.id.nav_products) {
             lauchProducts();
-        }else if (id == R.id.nav_login) {
+        } else if (id == R.id.nav_login) {
             launchSignOut();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     private void launchSignOut() {
         //Logout
         Intent signIn = new Intent(ComponentDetailNotLogged.this, SignIn.class);
         signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(signIn);
     }
-    private void lauchProducts(){
+
+    private void lauchProducts() {
         Intent products = new Intent(ComponentDetailNotLogged.this, UserNotLoggedActivity.class);
         products.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(products);

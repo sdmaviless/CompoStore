@@ -59,6 +59,12 @@
     
     <string name="facebook_app_id">1660848267394080</string>
     <string name="facebook_login_protocol_name">fb1660848267394080</string>
+    <string name="IconoDeBorrado">Icono de borrado</string>
+    <string name="iconoDeBorrado">Icono de borrado</string>
+    <string name="iconoImagenCarrito">Icono Imagen Carrito</string>
+    <string name="defaultPrecioItem">100€</string>
+    <string name="defcompname">Name of component</string>
+    <string name="DefaultDescription">Description</string>
 
 
 </resources>
