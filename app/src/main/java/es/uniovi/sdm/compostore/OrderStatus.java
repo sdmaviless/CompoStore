@@ -102,13 +102,7 @@ public class OrderStatus extends AppCompatActivity implements NavigationView.OnN
         } else if (id == R.id.nav_cart) {
             launch(Cart.class);
         } else if (id == R.id.nav_orders) {
-            //Intent orderIntent = new Intent(UserLoggedActivity.this, OrderStatus.class);
-            //startActivity(orderIntent);
             onBackPressed();
-        } else if (id == R.id.nav_settings){
-            //launchSettings();
-            launch(Settings.class);
-
         } else if (id == R.id.nav_sign_out) {
             launchSignOut();
 

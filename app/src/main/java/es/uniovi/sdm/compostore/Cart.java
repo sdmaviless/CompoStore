@@ -59,9 +59,7 @@ import es.uniovi.sdm.compostore.ViewHolder.CartViewHolder;
 import es.uniovi.sdm.compostore.ViewHolder.MenuViewHolder;
 import info.hoang8f.widget.FButton;
 
-public class Cart extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, RecyclerItemTouchHelperListener {
-
-    private DrawerLayout mDrawerLayout;
+public class Cart extends AppCompatActivity implements RecyclerItemTouchHelperListener {
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -319,47 +317,7 @@ public class Cart extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        // Handle navigation view item clicks here.
-        int id = menuItem.getItemId();
 
-        if (id == R.id.nav_products) {
-            goProducts();
-        } else if (id == R.id.nav_favorites) {
-            startActivity(new Intent(Cart.this, FavoritesActivity.class));
-        } else if (id == R.id.nav_cart) {
-            onBackPressed();
-        } else if (id == R.id.nav_orders) {
-            //Intent orderIntent = new Intent(UserLoggedActivity.this, OrderStatus.class);
-            //startActivity(orderIntent);
-            launch(OrderStatus.class);
-        } else if (id == R.id.nav_settings){
-            //launchSettings();
-            launch(Settings.class);
-
-        } else if (id == R.id.nav_sign_out) {
-            launchSignOut();
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    private void launchSignOut() {
-        //Logout
-        Intent signIn = new Intent(Cart.this, SignIn.class);
-        signIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(signIn);
-    }
-
-    public void launch(Class c){
-        Intent loggedIntent = new Intent(Cart.this, c);
-        startActivity(loggedIntent);
-        finish();
-    }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {

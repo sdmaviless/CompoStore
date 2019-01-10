@@ -249,8 +249,6 @@ public class ComponentsListNotLogged extends AppCompatActivity implements Naviga
 
         if (id == R.id.nav_products) {
             super.onBackPressed();
-        } else if (id == R.id.nav_settings) {
-            launch(Settings.class);
         } else if (id == R.id.nav_login) {
             launchSignOut();
         }

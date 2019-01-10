@@ -134,19 +134,12 @@ public class ComponentDetailNotLogged extends AppCompatActivity implements Navig
 
         if (id == R.id.nav_products) {
             lauchProducts();
-        } else if (id == R.id.nav_settings) {
-            launch(Settings.class);
-        } else if (id == R.id.nav_login) {
+        }else if (id == R.id.nav_login) {
             launchSignOut();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-    public void launch(Class c){
-        Intent loggedIntent = new Intent(ComponentDetailNotLogged.this, c);
-        startActivity(loggedIntent);
-        finish();
     }
     private void launchSignOut() {
         //Logout

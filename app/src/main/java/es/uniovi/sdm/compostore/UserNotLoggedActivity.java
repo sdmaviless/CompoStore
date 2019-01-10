@@ -103,15 +103,6 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Cambiar color y tamaño de titulo de menu
-        /**
-        Menu menu = navigationView.getMenu();
-        MenuItem communicate = menu.findItem(R.id.itemCommunicate);
-        SpannableString s = new SpannableString(communicate.getTitle());
-        s.setSpan(new TextAppearanceSpan(this, R.style.itemTitle), 0, s.length(), 0);
-        communicate.setTitle(s);
-        */
-
         //Cargar Menu
         recycler_menu = (RecyclerView)findViewById(R.id.recycler_menu);
         layoutManager = new LinearLayoutManager(this);
@@ -230,11 +221,6 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         if(id == R.id.refresh){
             loadMenu();
         }
@@ -250,8 +236,6 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
 
         if (id == R.id.nav_products) {
             // Handle the camera action
-        } else if (id == R.id.nav_settings) {
-            launch(Settings.class);
         } else if (id == R.id.nav_login) {
             launchSignOut();
         }
@@ -259,11 +243,7 @@ public class UserNotLoggedActivity extends AppCompatActivity implements Navigati
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    public void launch(Class c){
-        Intent loggedIntent = new Intent(UserNotLoggedActivity.this, c);
-        startActivity(loggedIntent);
-        finish();
-    }
+
     private void launchSignOut() {
         //Logout
         Intent signIn = new Intent(UserNotLoggedActivity.this, SignIn.class);

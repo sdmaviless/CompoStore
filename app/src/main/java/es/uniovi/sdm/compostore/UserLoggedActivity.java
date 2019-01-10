@@ -212,7 +212,6 @@ public class UserLoggedActivity extends AppCompatActivity
     }
 
     private void loadMenu() {
-
         recycler_menu.setAdapter(adapter);
 
         //Animation
@@ -256,11 +255,6 @@ public class UserLoggedActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         if(id == R.id.refresh){
             loadMenu();
         }
@@ -279,20 +273,11 @@ public class UserLoggedActivity extends AppCompatActivity
         } else if (id == R.id.nav_favorites) {
            startActivity(new Intent(UserLoggedActivity.this, FavoritesActivity.class));
         } else if (id == R.id.nav_cart) {
-            //Intent cartIntent = new Intent(UserLoggedActivity.this, Cart.class);
-            //startActivity(cartIntent);
             launch(Cart.class);
         } else if (id == R.id.nav_orders) {
-            //Intent orderIntent = new Intent(UserLoggedActivity.this, OrderStatus.class);
-            //startActivity(orderIntent);
             launch(OrderStatus.class);
-        } else if (id == R.id.nav_settings){
-            //launchSettings();
-            launch(Settings.class);
-
         } else if (id == R.id.nav_sign_out) {
             launchSignOut();
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -312,22 +297,6 @@ public class UserLoggedActivity extends AppCompatActivity
         startActivity(loggedIntent);
         finish();
     }
-     /*
-    public void launchFavourites(){
-        //Launch FavouritesActivity
-        Intent loggedIntent = new Intent(UserLoggedActivity.this, FavoritesActivity.class);
-        startActivity(loggedIntent);
-        finish();
-    }
-
-    public void launchSettings(){
-        //Launch CartActivity
-        Intent loggedIntent = new Intent(UserLoggedActivity.this, Settings.class);
-        startActivity(loggedIntent);
-        finish();
-    }
-
-    */
 }
 
 

@@ -392,17 +392,9 @@ public class ComponentsList extends AppCompatActivity implements NavigationView.
         } else if (id == R.id.nav_favorites) {
             startActivity(new Intent(ComponentsList.this, FavoritesActivity.class));
         } else if (id == R.id.nav_cart) {
-            //Intent cartIntent = new Intent(UserLoggedActivity.this, Cart.class);
-            //startActivity(cartIntent);
             launch(Cart.class);
         } else if (id == R.id.nav_orders) {
-            //Intent orderIntent = new Intent(UserLoggedActivity.this, OrderStatus.class);
-            //startActivity(orderIntent);
             launch(OrderStatus.class);
-        } else if (id == R.id.nav_settings){
-            //launchSettings();
-            launch(Settings.class);
-
         } else if (id == R.id.nav_sign_out) {
             launchSignOut();
 
