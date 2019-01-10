@@ -209,7 +209,7 @@ public class UserLoggedActivity extends AppCompatActivity
         mSlider.setPresetTransformer(SliderLayout.Transformer.Background2Foreground);
         mSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         mSlider.setCustomAnimation(new DescriptionAnimation());
-        mSlider.setDuration(4000); //Duracion de cada imagen antes de pasar a la siguiente
+        mSlider.setDuration(6000); //Duracion de cada imagen antes de pasar a la siguiente
     }
 
     private void loadMenu() {

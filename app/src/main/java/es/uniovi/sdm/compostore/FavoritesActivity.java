@@ -1,6 +1,5 @@
 package es.uniovi.sdm.compostore;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,19 +12,11 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.RelativeLayout;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
-
 import es.uniovi.sdm.compostore.Common.Common;
 import es.uniovi.sdm.compostore.Database.Database;
 import es.uniovi.sdm.compostore.Helper.RecyclerItemTouchHelper;
 import es.uniovi.sdm.compostore.Interface.RecyclerItemTouchHelperListener;
 import es.uniovi.sdm.compostore.Model.Favorites;
-import es.uniovi.sdm.compostore.Model.Order;
 import es.uniovi.sdm.compostore.ViewHolder.FavoritesAdapter;
 import es.uniovi.sdm.compostore.ViewHolder.FavoritesViewHolder;
 
@@ -49,7 +40,7 @@ public class FavoritesActivity extends AppCompatActivity implements RecyclerItem
         recyclerView.setLayoutManager(layoutManager);
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(recyclerView.getContext(),
              R.anim.layout_from_left);
-       recyclerView.setLayoutAnimation(controller);
+        recyclerView.setLayoutAnimation(controller);
 
         //Swipe para eliminar producto del carrito
         ItemTouchHelper.SimpleCallback itemTouchHelperCallBack = new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
